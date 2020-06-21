@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' =>  'conSistema',
+    'default' =>  env('conSistema'),
 
     /*
     |--------------------------------------------------------------------------
@@ -82,20 +82,18 @@ return [
             'host' => '142.44.203.34',
             'port' => '1433',
             'database' => 'Sistema',
-            'username' => 'sa',
-            'password' => 'pRT@191915',
-            'charset' => 'utf8',
+            'username' => 'Site',
+            'password' => 'pP@1995ph',
             'prefix' => '',
-            'prefix_indexes' => true,
-        ],  
+             'prefix_indexes' => true,
+        ],
         'conEmpresa' => [
             'driver' => 'sqlsrv',
             'host' => '142.44.203.34',
             'port' => '1433',
-            'database' => 'Teste',
-            'username' => 'sa',
-            'password' => 'pRT@191915',
-            'charset' => 'utf8',
+            'database' => 'Testes',
+            'username' => 'Site',
+            'password' => 'pP@1995ph',
             'prefix' => '',
             'prefix_indexes' => true,
         ]

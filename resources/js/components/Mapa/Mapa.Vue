@@ -1,13 +1,26 @@
 <template>
   <div>
-    <gmap-map :center="center" :zoom="12" style="width:100%;  height: 90vh;">
+    <div class="row container"></div>
+    <gmap-map :center="center" :zoom="zoom" style="width:100%;  height: 90vh;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        :icon="'img/local.png'"
-        @click="center=m.position"
-      ></gmap-marker>
+        :icon="'img/localPRT.png'"
+        :clickable="true"
+        @click="abrirJanela(m)"
+        :title="m.nome"
+      />
+
+      <gmap-info-window
+        :options="infoWindow.options"
+        :opened="infoWindow.open"
+        :position="infoWindow.position"
+        @closeclick="infoWindow.open = false"
+        :data="infoWindow.data"
+      >
+      <info v-if="infoWindow.open"  :data="infoWindow.data" />
+      </gmap-info-window>
     </gmap-map>
   </div>
 </template>
@@ -15,6 +28,7 @@
 <script>
 import Vue from "vue";
 import * as VueGoogleMaps from "vue2-google-maps";
+export const eventBus = new Vue();
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -27,9 +41,20 @@ export default {
   name: "GoogleMap",
   data() {
     return {
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      center: { lat: 45.508, lng: -73.587 },
+      selectPosicao: "",
+      infoWindow: {
+        data: null,
+        open: false,
+        options: {
+          pixelOffset: {
+            width: 0,
+            height: 0
+          }
+        }
+      },
+      center: { lat: -3.76825, lng: -38.566362 },
+      zoom: 13,
+      hora: new Date(),
       markers: [],
       places: [],
       currentPlace: null,
@@ -42,11 +67,25 @@ export default {
   },
 
   methods: {
+    abrirJanela(item) {
+      this.infoWindow.options.pixelOffset.width = 0;
+      this.infoWindow.options.pixelOffset.height = 0;
+      this.infoWindow.position = item.position;
+      this.infoWindow.data = item;
+      this.infoWindow.open = true;
+    },
     setPlace(place) {
       this.currentPlace = place;
     },
+    tempo() {
+      setTimeout(() => {
+        this.geolocate();
+      }, 30000);
+    },
     addMarker() {
       if (this.currentPlace) {
+        this.markers = [];
+
         const marker = {
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
@@ -57,21 +96,32 @@ export default {
         this.currentPlace = null;
       }
     },
-    geolocate: function() {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        const marker = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
-      });
+    geolocate() {
+      axios
+        .get("/ultimaposicao")
+        .then(response => {
+          this.markers = [];
+          [...response.data].forEach(item => {
+            this.markers.push({
+              position: {
+                lat: parseFloat(item.latitude),
+                lng: parseFloat(item.longitude)
+              },
+              nome: item.descricao,
+              dataehora: item.dataehora
+            });
+          });
+        })
+        .catch(error => {
+          console.error("error: ", error);
+        });
+
+      this.tempo();
+    },
+    formatardata(date) {
+      return moment(date, "YYYY-MM-DD HH:mm:ss.SSS").format(
+        "DD-MM-YYYY HH:mm:ss"
+      );
     }
   }
 };

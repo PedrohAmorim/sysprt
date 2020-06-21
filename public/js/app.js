@@ -1903,15 +1903,41 @@ module.exports = {
 /*!********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Mapa/Mapa.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************************************************************************************/
-/*! exports provided: default */
+/*! exports provided: eventBus, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "eventBus", function() { return eventBus; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-google-maps */ "./node_modules/vue2-google-maps/dist/main.js");
 /* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1928,6 +1954,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 
+var eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__, {
   load: {
     key: "AIzaSyBLdmyd2H-t2cBb0M_udCjGcn-Upgudx5I",
@@ -1939,12 +1966,23 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
   name: "GoogleMap",
   data: function data() {
     return {
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      center: {
-        lat: 45.508,
-        lng: -73.587
+      selectPosicao: "",
+      infoWindow: {
+        data: null,
+        open: false,
+        options: {
+          pixelOffset: {
+            width: 0,
+            height: 0
+          }
+        }
       },
+      center: {
+        lat: -3.76825,
+        lng: -38.566362
+      },
+      zoom: 13,
+      hora: new Date(),
       markers: [],
       places: [],
       currentPlace: null,
@@ -1955,11 +1993,26 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
     this.geolocate();
   },
   methods: {
+    abrirJanela: function abrirJanela(item) {
+      this.infoWindow.options.pixelOffset.width = 0;
+      this.infoWindow.options.pixelOffset.height = 0;
+      this.infoWindow.position = item.position;
+      this.infoWindow.data = item;
+      this.infoWindow.open = true;
+    },
     setPlace: function setPlace(place) {
       this.currentPlace = place;
     },
+    tempo: function tempo() {
+      var _this = this;
+
+      setTimeout(function () {
+        _this.geolocate();
+      }, 30000);
+    },
     addMarker: function addMarker() {
       if (this.currentPlace) {
+        this.markers = [];
         var marker = {
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
@@ -1973,28 +2026,86 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
       }
     },
     geolocate: function geolocate() {
-      var _this = this;
+      var _this2 = this;
 
-      navigator.geolocation.getCurrentPosition(function (position) {
-        _this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        var marker = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+      axios.get("/ultimaposicao").then(function (response) {
+        _this2.markers = [];
 
-        _this.markers.push({
-          position: marker
+        _toConsumableArray(response.data).forEach(function (item) {
+          _this2.markers.push({
+            position: {
+              lat: parseFloat(item.latitude),
+              lng: parseFloat(item.longitude)
+            },
+            nome: item.descricao,
+            dataehora: item.dataehora
+          });
         });
-
-        _this.places.push(_this.currentPlace);
-
-        _this.center = marker;
-        _this.currentPlace = null;
+      })["catch"](function (error) {
+        console.error("error: ", error);
       });
+      this.tempo();
+    },
+    formatardata: function formatardata(date) {
+      return moment(date, "YYYY-MM-DD HH:mm:ss.SSS").format("DD-MM-YYYY HH:mm:ss");
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Mapa/info.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Mapa/info.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["data"],
+  data: function data() {
+    return {};
   }
 });
 
@@ -38490,30 +38601,162 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("div", { staticClass: "row container" }),
+      _vm._v(" "),
       _c(
         "gmap-map",
         {
           staticStyle: { width: "100%", height: "90vh" },
-          attrs: { center: _vm.center, zoom: 12 }
+          attrs: { center: _vm.center, zoom: _vm.zoom }
         },
-        _vm._l(_vm.markers, function(m, index) {
-          return _c("gmap-marker", {
-            key: index,
-            attrs: { position: m.position, icon: "img/local.png" },
-            on: {
-              click: function($event) {
-                _vm.center = m.position
+        [
+          _vm._l(_vm.markers, function(m, index) {
+            return _c("gmap-marker", {
+              key: index,
+              attrs: {
+                position: m.position,
+                icon: "img/localPRT.png",
+                clickable: true,
+                title: m.nome
+              },
+              on: {
+                click: function($event) {
+                  return _vm.abrirJanela(m)
+                }
               }
-            }
-          })
-        }),
-        1
+            })
+          }),
+          _vm._v(" "),
+          _c(
+            "gmap-info-window",
+            {
+              attrs: {
+                options: _vm.infoWindow.options,
+                opened: _vm.infoWindow.open,
+                position: _vm.infoWindow.position,
+                data: _vm.infoWindow.data
+              },
+              on: {
+                closeclick: function($event) {
+                  _vm.infoWindow.open = false
+                }
+              }
+            },
+            [
+              _vm.infoWindow.open
+                ? _c("info", { attrs: { data: _vm.infoWindow.data } })
+                : _vm._e()
+            ],
+            1
+          )
+        ],
+        2
       )
     ],
     1
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Mapa/info.vue?vue&type=template&id=c63c2fc6&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Mapa/info.vue?vue&type=template&id=c63c2fc6& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticStyle: { "font-size": "15px" } }, [
+    _c("label", { staticClass: "container border-bottom border-primary p-1" }, [
+      _c("i", { staticClass: "fas fa-bus" }),
+      _vm._v(" "),
+      _c("span", { staticClass: "font-weight-light" }, [
+        _vm._v(_vm._s(_vm.data.nome))
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { staticClass: "py-1" }, [
+      _c("p", { staticClass: "font-weight-light" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v("\n       " + _vm._s(_vm.data.dataehora) + "\n     ")
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { staticClass: "py-1" }, [
+      _c("i", {
+        staticClass: "fas fa-search-location text-primary font-weight-bold",
+        staticStyle: { "text-size": "15px" }
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-primary font-weight-bold" }, [
+        _vm._v(" Posicao:")
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("p", { staticClass: "font-weight-light" }, [
+        _c("span", { staticClass: "text-secondary" }, [_vm._v(" Latitude: ")]),
+        _vm._v(" " + _vm._s(_vm.data.position.lat) + "\n       "),
+        _c("br"),
+        _vm._v(" "),
+        _c("span", { staticClass: "text-secondary" }, [_vm._v(" Longitude: ")]),
+        _vm._v(" " + _vm._s(_vm.data.position.lng) + "\n     ")
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _vm._m(1)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-primary font-weight-bold" }, [
+      _c("i", { staticClass: "far fa-clock" }),
+      _vm._v(" "),
+      _c("span", [_vm._v(" Hora:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "py-1" }, [
+      _c("p", { staticClass: "font-weight-light" }, [
+        _c("span", { staticClass: "text-primary font-weight-bold" }, [
+          _c("i", { staticClass: "fas fa-search-location text-primary" }),
+          _vm._v(" "),
+          _c("span", [_vm._v(" Endereço:")]),
+          _vm._v(" "),
+          _c("br")
+        ]),
+        _vm._v(" "),
+        _c("span", [_vm._v("...")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -53220,9 +53463,12 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _evento__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./evento */ "./resources/js/evento/index.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -53231,6 +53477,8 @@ module.exports = function(module) {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+Vue.use(_evento__WEBPACK_IMPORTED_MODULE_0__["default"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -53242,6 +53490,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('mapa', __webpack_require__(/*! ./components/Mapa/Mapa.vue */ "./resources/js/components/Mapa/Mapa.vue")["default"]);
+Vue.component('info', __webpack_require__(/*! ./components/Mapa/info.vue */ "./resources/js/components/Mapa/info.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -53303,14 +53552,16 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!***********************************************!*\
   !*** ./resources/js/components/Mapa/Mapa.vue ***!
   \***********************************************/
-/*! exports provided: default */
+/*! exports provided: eventBus, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Mapa_vue_vue_type_template_id_be49aad8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Mapa.vue?vue&type=template&id=be49aad8& */ "./resources/js/components/Mapa/Mapa.vue?vue&type=template&id=be49aad8&");
 /* harmony import */ var _Mapa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Mapa.vue?vue&type=script&lang=js& */ "./resources/js/components/Mapa/Mapa.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "eventBus", function() { return _Mapa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["eventBus"]; });
+
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -53340,13 +53591,15 @@ component.options.__file = "resources/js/components/Mapa/Mapa.vue"
 /*!************************************************************************!*\
   !*** ./resources/js/components/Mapa/Mapa.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
-/*! exports provided: default */
+/*! exports provided: default, eventBus */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mapa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Mapa.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Mapa/Mapa.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mapa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "eventBus", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mapa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["eventBus"]; });
+
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mapa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -53365,6 +53618,96 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mapa_vue_vue_type_template_id_be49aad8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/Mapa/info.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Mapa/info.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _info_vue_vue_type_template_id_c63c2fc6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./info.vue?vue&type=template&id=c63c2fc6& */ "./resources/js/components/Mapa/info.vue?vue&type=template&id=c63c2fc6&");
+/* harmony import */ var _info_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./info.vue?vue&type=script&lang=js& */ "./resources/js/components/Mapa/info.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _info_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _info_vue_vue_type_template_id_c63c2fc6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _info_vue_vue_type_template_id_c63c2fc6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Mapa/info.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Mapa/info.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Mapa/info.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_info_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./info.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Mapa/info.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_info_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Mapa/info.vue?vue&type=template&id=c63c2fc6&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Mapa/info.vue?vue&type=template&id=c63c2fc6& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_info_vue_vue_type_template_id_c63c2fc6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./info.vue?vue&type=template&id=c63c2fc6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Mapa/info.vue?vue&type=template&id=c63c2fc6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_info_vue_vue_type_template_id_c63c2fc6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_info_vue_vue_type_template_id_c63c2fc6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/evento/index.js":
+/*!**************************************!*\
+  !*** ./resources/js/evento/index.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
+/* harmony default export */ __webpack_exports__["default"] = ({
+  install: function install(Vue, options) {
+    Vue.prototype.$eventBus = EventBus;
+  }
+});
 
 /***/ }),
 
