@@ -2008,22 +2008,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
 
       setTimeout(function () {
         _this.geolocate();
-      }, 30000);
-    },
-    addMarker: function addMarker() {
-      if (this.currentPlace) {
-        this.markers = [];
-        var marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
-        };
-        this.markers.push({
-          position: marker
-        });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
-      }
+      }, 10000);
     },
     geolocate: function geolocate() {
       var _this2 = this;
@@ -2038,16 +2023,18 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
               lng: parseFloat(item.longitude)
             },
             nome: item.descricao,
-            dataehora: item.dataehora
+            dataehora: item.dataehora,
+            velocidade: item.velocidade,
+            ignicao: item.ignicao,
+            tipo: item.tipo
           });
         });
+
+        _this2.abrirJanela();
       })["catch"](function (error) {
         console.error("error: ", error);
       });
       this.tempo();
-    },
-    formatardata: function formatardata(date) {
-      return moment(date, "YYYY-MM-DD HH:mm:ss.SSS").format("DD-MM-YYYY HH:mm:ss");
     }
   }
 });
@@ -2063,6 +2050,21 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -38685,10 +38687,25 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticStyle: { "font-size": "15px" } }, [
     _c("label", { staticClass: "container border-bottom border-primary p-1" }, [
-      _c("i", { staticClass: "fas fa-bus" }),
+      _vm.data.tipo == "onibus"
+        ? _c("i", { staticClass: "fas fa-bus" })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.data.tipo == "carro"
+        ? _c("i", { staticClass: "fas fa-car-side" })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.data.tipo == "moto"
+        ? _c("i", { staticClass: "fas fa-motorcycle" })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("i", {
+        staticClass: "fas fa-key",
+        style: { color: _vm.data.ignicao == "1" ? "green" : "red" }
+      }),
       _vm._v(" "),
       _c("span", { staticClass: "font-weight-light" }, [
-        _vm._v(_vm._s(_vm.data.nome))
+        _vm._v(_vm._s(_vm.data.nome) + "   ")
       ])
     ]),
     _vm._v(" "),
@@ -38697,6 +38714,17 @@ var render = function() {
     _c("label", { staticClass: "py-1" }, [
       _c("p", { staticClass: "font-weight-light" }, [
         _vm._m(0),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v("\n      " + _vm._s(_vm.data.velocidade) + "Km/H\n    ")
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("label", { staticClass: "py-1" }, [
+      _c("p", { staticClass: "font-weight-light" }, [
+        _vm._m(1),
         _vm._v(" "),
         _c("br"),
         _vm._v("\n      " + _vm._s(_vm.data.dataehora) + "\n    ")
@@ -38729,10 +38757,20 @@ var render = function() {
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
-    _vm._m(1)
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-primary font-weight-bold" }, [
+      _c("i", { staticClass: "far fa-clock" }),
+      _vm._v(" "),
+      _c("span", [_vm._v("Velocidade:")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

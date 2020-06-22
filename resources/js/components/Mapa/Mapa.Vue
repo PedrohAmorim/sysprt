@@ -80,21 +80,7 @@ export default {
     tempo() {
       setTimeout(() => {
         this.geolocate();
-      }, 30000);
-    },
-    addMarker() {
-      if (this.currentPlace) {
-        this.markers = [];
-
-        const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
-        };
-        this.markers.push({ position: marker });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
-      }
+      }, 10000);
     },
     geolocate() {
       axios
@@ -108,20 +94,20 @@ export default {
                 lng: parseFloat(item.longitude)
               },
               nome: item.descricao,
-              dataehora: item.dataehora
+              dataehora: item.dataehora,
+              velocidade: item.velocidade,
+              ignicao: item.ignicao,
+              tipo: item.tipo
             });
           });
+
+          this.abrirJanela();
         })
         .catch(error => {
           console.error("error: ", error);
         });
 
       this.tempo();
-    },
-    formatardata(date) {
-      return moment(date, "YYYY-MM-DD HH:mm:ss.SSS").format(
-        "DD-MM-YYYY HH:mm:ss"
-      );
     }
   }
 };
