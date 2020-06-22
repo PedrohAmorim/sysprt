@@ -12,8 +12,10 @@ class User extends Authenticatable
 
     public $dateFormat = 'd-m-Y H:i:s';
 
+    public $table = 'users';
+
     public $connection = 'conSistema';
-    
+
     /**
      * The attributes that are mass assignable.
      *

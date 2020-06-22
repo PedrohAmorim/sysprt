@@ -36,7 +36,7 @@
           <span>Endereço:</span>
           <br />
         </span>
-        <span>...</span>
+
       </p>
     </label>
   </div>
@@ -45,6 +45,7 @@
 <script>
 export default {
   props: ["data"],
+
   data() {
     return {};
   }

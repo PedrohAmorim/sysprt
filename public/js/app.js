@@ -38755,9 +38755,7 @@ var staticRenderFns = [
           _c("span", [_vm._v("Endereço:")]),
           _vm._v(" "),
           _c("br")
-        ]),
-        _vm._v(" "),
-        _c("span", [_vm._v("...")])
+        ])
       ])
     ])
   }
