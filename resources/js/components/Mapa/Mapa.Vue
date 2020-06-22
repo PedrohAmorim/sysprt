@@ -108,7 +108,10 @@ export default {
                 lng: parseFloat(item.longitude)
               },
               nome: item.descricao,
-              dataehora: item.dataehora
+              dataehora: item.dataehora,
+              velocidade: item.velocidade,
+              ignicao: item.ignicao,
+              tipo: item.tipo
             });
           });
         })

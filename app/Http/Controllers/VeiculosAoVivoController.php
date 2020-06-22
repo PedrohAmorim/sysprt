@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UltimaPosicao;
+use App\Models\FusoHorario;
+use Illuminate\Support\Facades\DB;
 
 class VeiculosAoVivoController extends Controller
 {
@@ -15,12 +17,18 @@ class VeiculosAoVivoController extends Controller
 
     public function ultimaposicao()
     {
+        $fuso = FusoHorario::all()->first();
+
+        //dd($fuso);
+
         $ultimaposicao=  UltimaPosicao::on('conEmpresa')
-            ->select('ultimaposicao.id', 'dataehora', 'latitude', 'longitude', 'ultimaposicao.idModulo', 'v.descricao')
+            ->select('ultimaposicao.id', 'dataehora', 'latitude', 'longitude', 'ultimaposicao.idModulo', 'v.descricao', 'ultimaposicao.ignicao', DB::raw('convert(int,ultimaposicao.velocidade)'),'v.tipo')
             ->join('Veiculo as v', 'v.id', '=', 'ultimaposicao.idVeiculo')->get();
 
             foreach($ultimaposicao as $item){
-                $item->dataehora = date("d-m-Y H:i:s", strtotime($item->dataehora));
+                $item->dataehora =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $item->dataehora);
+                $item->dataehora = $item->dataehora->timezone('UTC')->addHour($fuso->valor)->format('d-m-Y H:i:s');
+                //$item->dataehora = date("d-m-Y H:i:s", strtotime($item->dataehora));
             }
 
             return $ultimaposicao;
@@ -28,5 +36,6 @@ class VeiculosAoVivoController extends Controller
 
     public function posicaoporhorario(Request $request)
     {
+
     }
 }

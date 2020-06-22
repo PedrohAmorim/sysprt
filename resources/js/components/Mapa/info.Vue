@@ -1,8 +1,23 @@
 <template>
   <div style="font-size: 15px;">
     <label class="container border-bottom border-primary p-1">
-      <i class="fas fa-bus"></i>
-      <span class="font-weight-light">{{ data.nome}}</span>
+
+      <i v-if="data.tipo == 'onibus'" class="fas fa-bus"></i>
+      <i v-if="data.tipo == 'carro'" class="fas fa-car-side"></i>
+      <i v-if="data.tipo == 'moto'" class="fas fa-motorcycle"></i>
+
+      <span class="font-weight-light">{{data.nome }}  <i class="fas fa-key" :style="{ color: data.ignition == '1' ? 'green' :'red' }"></i> </span>
+    </label>
+    <br />
+     <label class="py-1">
+      <p class="font-weight-light">
+        <span class="text-primary font-weight-bold">
+          <i class="far fa-clock"></i>
+          <span>Velocidade:</span>
+        </span>
+        <br />
+        {{data.velocidade == null ? 0 : data.velocidade}}Km/H
+      </p>
     </label>
     <br />
     <label class="py-1">
