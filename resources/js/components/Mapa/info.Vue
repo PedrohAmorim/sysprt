@@ -8,30 +8,35 @@
     <label class="py-1">
       <p class="font-weight-light">
         <span class="text-primary font-weight-bold">
-            <i class="far fa-clock"></i> <span> Hora:</span>
-            </span>
-            <br />
+          <i class="far fa-clock"></i>
+          <span>Hora:</span>
+        </span>
+        <br />
         {{data.dataehora}}
       </p>
     </label>
     <br />
-   <label class="py-1">
-       <i class="fas fa-search-location text-primary font-weight-bold" style="text-size: 15px;"></i> <span class="text-primary font-weight-bold"> Posicao:</span>
- <br />
+    <label class="py-1">
+      <i class="fas fa-search-location text-primary font-weight-bold" style="text-size: 15px;"></i>
+      <span class="text-primary font-weight-bold">Posicao:</span>
+      <br />
       <p class="font-weight-light">
-        <span class="text-secondary"> Latitude: </span> {{data.position.lat}}
-        <br/>
-        <span class="text-secondary"> Longitude: </span> {{data.position.lng}}
+        <span class="text-secondary">Latitude:</span>
+        {{data.position.lat}}
+        <br />
+        <span class="text-secondary">Longitude:</span>
+        {{data.position.lng}}
       </p>
     </label>
     <br />
-      <label class="py-1">
+    <label class="py-1">
       <p class="font-weight-light">
         <span class="text-primary font-weight-bold">
-                    <i class="fas fa-search-location text-primary"></i> <span> Endereço:</span>
-                     <br />
+          <i class="fas fa-search-location text-primary"></i>
+          <span>Endereço:</span>
+          <br />
         </span>
-        <span>...</span>
+
       </p>
     </label>
   </div>
@@ -40,6 +45,7 @@
 <script>
 export default {
   props: ["data"],
+
   data() {
     return {};
   }

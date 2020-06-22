@@ -2102,6 +2102,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["data"],
   data: function data() {
@@ -38694,7 +38699,7 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("br"),
-        _vm._v("\n       " + _vm._s(_vm.data.dataehora) + "\n     ")
+        _vm._v("\n      " + _vm._s(_vm.data.dataehora) + "\n    ")
       ])
     ]),
     _vm._v(" "),
@@ -38707,18 +38712,18 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "text-primary font-weight-bold" }, [
-        _vm._v(" Posicao:")
+        _vm._v("Posicao:")
       ]),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
       _c("p", { staticClass: "font-weight-light" }, [
-        _c("span", { staticClass: "text-secondary" }, [_vm._v(" Latitude: ")]),
-        _vm._v(" " + _vm._s(_vm.data.position.lat) + "\n       "),
+        _c("span", { staticClass: "text-secondary" }, [_vm._v("Latitude:")]),
+        _vm._v("\n      " + _vm._s(_vm.data.position.lat) + "\n      "),
         _c("br"),
         _vm._v(" "),
-        _c("span", { staticClass: "text-secondary" }, [_vm._v(" Longitude: ")]),
-        _vm._v(" " + _vm._s(_vm.data.position.lng) + "\n     ")
+        _c("span", { staticClass: "text-secondary" }, [_vm._v("Longitude:")]),
+        _vm._v("\n      " + _vm._s(_vm.data.position.lng) + "\n    ")
       ])
     ]),
     _vm._v(" "),
@@ -38735,7 +38740,7 @@ var staticRenderFns = [
     return _c("span", { staticClass: "text-primary font-weight-bold" }, [
       _c("i", { staticClass: "far fa-clock" }),
       _vm._v(" "),
-      _c("span", [_vm._v(" Hora:")])
+      _c("span", [_vm._v("Hora:")])
     ])
   },
   function() {
@@ -38747,12 +38752,10 @@ var staticRenderFns = [
         _c("span", { staticClass: "text-primary font-weight-bold" }, [
           _c("i", { staticClass: "fas fa-search-location text-primary" }),
           _vm._v(" "),
-          _c("span", [_vm._v(" Endereço:")]),
+          _c("span", [_vm._v("Endereço:")]),
           _vm._v(" "),
           _c("br")
-        ]),
-        _vm._v(" "),
-        _c("span", [_vm._v("...")])
+        ])
       ])
     ])
   }
