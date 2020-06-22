@@ -12,7 +12,7 @@
      <label class="py-1">
       <p class="font-weight-light">
         <span class="text-primary font-weight-bold">
-          <i class="far fa-clock"></i>
+       <i class="fas fa-tachometer-alt"></i>
           <span>Velocidade:</span>
         </span>
         <br />
