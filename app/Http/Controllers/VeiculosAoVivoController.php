@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\UltimaPosicao;
 use App\Models\FusoHorario;
@@ -21,9 +22,19 @@ class VeiculosAoVivoController extends Controller
 
         //dd($fuso);
 
+        if(Auth::user()->admin){
+            $ultimaposicao=  UltimaPosicao::on('conEmpresa')
+            ->select('ultimaposicao.id', 'dataehora', 'latitude', 'longitude', 'ultimaposicao.idModulo', 'v.descricao', 'ultimaposicao.ignicao', DB::raw('convert(int,ultimaposicao.velocidade) as velocidade'),'v.tipo')
+            ->join('Veiculo as v', 'v.id', '=', 'ultimaposicao.idVeiculo')
+            ->get();
+        }else{
+
         $ultimaposicao=  UltimaPosicao::on('conEmpresa')
             ->select('ultimaposicao.id', 'dataehora', 'latitude', 'longitude', 'ultimaposicao.idModulo', 'v.descricao', 'ultimaposicao.ignicao', DB::raw('convert(int,ultimaposicao.velocidade) as velocidade'),'v.tipo')
-            ->join('Veiculo as v', 'v.id', '=', 'ultimaposicao.idVeiculo')->get();
+            ->join('Veiculo as v', 'v.id', '=', 'ultimaposicao.idVeiculo')
+            ->where('v.idUsuario',Auth::user()->id)
+            ->get();
+        }
 
             foreach($ultimaposicao as $item){
                 $item->dataehora =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $item->dataehora);

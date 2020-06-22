@@ -1952,6 +1952,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 
 var eventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
@@ -1995,7 +1996,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
   methods: {
     abrirJanela: function abrirJanela(item) {
       this.infoWindow.options.pixelOffset.width = 0;
-      this.infoWindow.options.pixelOffset.height = 0;
+      this.infoWindow.options.pixelOffset.height = -25;
       this.infoWindow.position = item.position;
       this.infoWindow.data = item;
       this.infoWindow.open = true;
@@ -2029,8 +2030,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
             tipo: item.tipo
           });
         });
-
-        _this2.abrirJanela();
       })["catch"](function (error) {
         console.error("error: ", error);
       });
@@ -38622,7 +38621,14 @@ var render = function() {
               key: index,
               attrs: {
                 position: m.position,
-                icon: "img/localPRT.png",
+                icon:
+                  m.tipo == "moto"
+                    ? m.velocidade == 0
+                      ? "img/moto.png"
+                      : "img/motoandando.png"
+                    : m.velocidade == 0
+                    ? "img/carro.png"
+                    : "img/carroandando.png",
                 clickable: true,
                 title: m.nome
               },
@@ -38766,7 +38772,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "text-primary font-weight-bold" }, [
-      _c("i", { staticClass: "far fa-clock" }),
+      _c("i", { staticClass: "fas fa-tachometer-alt" }),
       _vm._v(" "),
       _c("span", [_vm._v("Velocidade:")])
     ])

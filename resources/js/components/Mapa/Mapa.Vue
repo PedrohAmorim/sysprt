@@ -6,7 +6,8 @@
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        :icon="'img/localPRT.png'"
+        :icon="m.tipo == 'moto' ? m.velocidade == 0 ? 'img/moto.png' : 'img/motoandando.png' : m.velocidade == 0 ? 'img/carro.png' : 'img/carroandando.png'"
+
         :clickable="true"
         @click="abrirJanela(m)"
         :title="m.nome"
@@ -69,7 +70,7 @@ export default {
   methods: {
     abrirJanela(item) {
       this.infoWindow.options.pixelOffset.width = 0;
-      this.infoWindow.options.pixelOffset.height = 0;
+      this.infoWindow.options.pixelOffset.height = -25;
       this.infoWindow.position = item.position;
       this.infoWindow.data = item;
       this.infoWindow.open = true;
@@ -100,8 +101,6 @@ export default {
               tipo: item.tipo
             });
           });
-
-          this.abrirJanela();
         })
         .catch(error => {
           console.error("error: ", error);
