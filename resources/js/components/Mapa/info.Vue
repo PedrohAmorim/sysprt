@@ -5,8 +5,8 @@
       <i v-if="data.tipo == 'onibus'" class="fas fa-bus"></i>
       <i v-if="data.tipo == 'carro'" class="fas fa-car-side"></i>
       <i v-if="data.tipo == 'moto'" class="fas fa-motorcycle"></i>
-
-      <span class="font-weight-light">{{data.nome }}  <i class="fas fa-key" :style="{ color: data.ignition == '1' ? 'green' :'red' }"></i> </span>
+    <i class="fas fa-key" :style="{ color: data.ignicao == '1' ? 'green' : 'red' }"></i>
+      <span class="font-weight-light">{{data.nome}}   </span>
     </label>
     <br />
      <label class="py-1">
@@ -16,7 +16,7 @@
           <span>Velocidade:</span>
         </span>
         <br />
-        {{data.velocidade == null ? 0 : data.velocidade}}Km/H
+        {{data.velocidade}}Km/H
       </p>
     </label>
     <br />

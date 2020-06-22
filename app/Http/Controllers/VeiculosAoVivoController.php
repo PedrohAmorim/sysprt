@@ -22,7 +22,7 @@ class VeiculosAoVivoController extends Controller
         //dd($fuso);
 
         $ultimaposicao=  UltimaPosicao::on('conEmpresa')
-            ->select('ultimaposicao.id', 'dataehora', 'latitude', 'longitude', 'ultimaposicao.idModulo', 'v.descricao', 'ultimaposicao.ignicao', DB::raw('convert(int,ultimaposicao.velocidade)'),'v.tipo')
+            ->select('ultimaposicao.id', 'dataehora', 'latitude', 'longitude', 'ultimaposicao.idModulo', 'v.descricao', 'ultimaposicao.ignicao', DB::raw('convert(int,ultimaposicao.velocidade) as velocidade'),'v.tipo')
             ->join('Veiculo as v', 'v.id', '=', 'ultimaposicao.idVeiculo')->get();
 
             foreach($ultimaposicao as $item){

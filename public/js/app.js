@@ -2008,22 +2008,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
 
       setTimeout(function () {
         _this.geolocate();
-      }, 30000);
-    },
-    addMarker: function addMarker() {
-      if (this.currentPlace) {
-        this.markers = [];
-        var marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
-        };
-        this.markers.push({
-          position: marker
-        });
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
-      }
+      }, 10000);
     },
     geolocate: function geolocate() {
       var _this2 = this;
@@ -2044,13 +2029,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
             tipo: item.tipo
           });
         });
+
+        _this2.abrirJanela();
       })["catch"](function (error) {
         console.error("error: ", error);
       });
       this.tempo();
-    },
-    formatardata: function formatardata(date) {
-      return moment(date, "YYYY-MM-DD HH:mm:ss.SSS").format("DD-MM-YYYY HH:mm:ss");
     }
   }
 });
@@ -38715,12 +38699,13 @@ var render = function() {
         ? _c("i", { staticClass: "fas fa-motorcycle" })
         : _vm._e(),
       _vm._v(" "),
+      _c("i", {
+        staticClass: "fas fa-key",
+        style: { color: _vm.data.ignicao == "1" ? "green" : "red" }
+      }),
+      _vm._v(" "),
       _c("span", { staticClass: "font-weight-light" }, [
-        _vm._v(_vm._s(_vm.data.nome) + "  "),
-        _c("i", {
-          staticClass: "fas fa-key",
-          style: { color: _vm.data.ignition == "1" ? "green" : "red" }
-        })
+        _vm._v(_vm._s(_vm.data.nome) + "   ")
       ])
     ]),
     _vm._v(" "),
@@ -38731,11 +38716,7 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("br"),
-        _vm._v(
-          "\n      " +
-            _vm._s(_vm.data.velocidade == null ? 0 : _vm.data.velocidade) +
-            "Km/H\n    "
-        )
+        _vm._v("\n      " + _vm._s(_vm.data.velocidade) + "Km/H\n    ")
       ])
     ]),
     _vm._v(" "),
