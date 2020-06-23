@@ -33,11 +33,11 @@
 <body class="fundo">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-6 offset-3">
-                <form method="POST" action="{{ route('login') }}" style="margin-top: 150px;">
+            <div class="col-sm-6 col-md-6 col-lg-6 offset-3" style="margin: 0 auto;">
+                <form method="POST" action="{{ route('login') }}" style="margin-top: 100px;">
                     @csrf
-                    <div class="form-group">
-                        <img src="{{url('img/logo.png')}}" class="bg-light  col-sm-2 offset-5" style="max-width: 150px;" />
+                    <div class="text-center p-1">
+                        <img src="{{url('img/logo.png')}}" class="bg-light rounded" style="max-width: 150px;" />
                     </div>
                     <div class="form-group ">
                         <label class="mb-0 display-4 text-center text-light">E-mail</label>

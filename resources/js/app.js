@@ -20,8 +20,10 @@ Vue.use(eventBus)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+Vue.component('menu-principal', require('./components/Menu/Menu.vue').default);
 Vue.component('mapa', require('./components/Mapa/Mapa.vue').default);
 Vue.component('info', require('./components/Mapa/info.vue').default);
+Vue.component('replay', require('./components/replay/Mapa.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
