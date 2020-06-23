@@ -7,6 +7,7 @@
         v-for="(m, index) in markers"
         :position="m.position"
         :icon="m.tipo == 'moto' ? m.velocidade == 0 ? 'img/moto.png' : 'img/motoandando.png' : m.velocidade == 0 ? 'img/carro.png' : 'img/carroandando.png'"
+
         :clickable="true"
         @click="abrirJanela(m)"
         :title="m.nome"
@@ -68,14 +69,11 @@ export default {
 
   methods: {
     abrirJanela(item) {
-      this.infoWindow.open = false
-         setTimeout(() => {
       this.infoWindow.options.pixelOffset.width = 0;
-      this.infoWindow.options.pixelOffset.height = -40;
+      this.infoWindow.options.pixelOffset.height = -25;
       this.infoWindow.position = item.position;
       this.infoWindow.data = item;
       this.infoWindow.open = true;
-         },100);
     },
     setPlace(place) {
       this.currentPlace = place;
@@ -92,7 +90,8 @@ export default {
           this.markers = [];
           [...response.data].forEach(item => {
 
-          let $dados = {
+
+            $dados = {
               position: {
                 lat: parseFloat(item.latitude),
                 lng: parseFloat(item.longitude)
@@ -103,16 +102,13 @@ export default {
               ignicao: item.ignicao,
               tipo: item.tipo
             };
-            if(this.infoWindow.data != null)
-            {
                //Atualizar o Info Window se ele estiver aberto
               if(item.descricao == this.infoWindow.data.nome && this.infoWindow.open)
               {
               this.abrirJanela($dados)
               }
-            }
 
-              this.markers.push($dados)
+            this.markers.push($dados);
           });
         })
         .catch(error => {
