@@ -22,5 +22,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/ultimaposicao', 'VeiculosAoVivoController@ultimaposicao');
-Route::get('/replay', 'ReplayController@index');
+Route::post('/posicaoperiodo', 'ReplayController@periodo');
+Route::get('/pegarveiculos','ReplayController@pegarVeiculos');
 
