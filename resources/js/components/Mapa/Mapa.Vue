@@ -1,17 +1,9 @@
 <template>
   <div>
     <div class="container-fluid p-0">
-      <div v-if="carregando" class="container bg-light text-center">
-        <img src="img/carregando.gif" style="height: 500px; margin: auto;" />
-      </div>
-      <gmap-map
-        v-if="carregando == false"
-        :center="center"
-        :zoom="zoom"
-        :style="{width: '100%',  height: '90vh'}"
-      >
+      <gmap-map :center="center" :zoom="zoom" :style="{width: '100%',  height: '90vh'}">
         <gmap-polyline
-        v-if="(modo == 'replay' || modo="passando") && ver.linha"
+        v-if="ver.linha"
         :path="markersLine"
         :options="{ strokeColor: 'blue' }"
         />
@@ -37,30 +29,33 @@
         </gmap-info-window>
       </gmap-map>
 
-      <div v-if="modo == 'replay' || modo == 'passando'" class="fixed-bottom fundo">
-        <div class="row text-light text-center h5 m-2">
-          <div class="col text-center">{{horaatual}}</div>
-        </div>
-        <div class="row m-3">
-          <div class="col text-center" @click="reproduzir(-1)">
-            <i class="fas fa-chevron-left text-light display-4"></i>
-          </div>
+      <div v-if="modo != 'normal'" class="fixed-bottom fundo">
+        <img
+          v-if="carregando"
+          src="img/carregando.gif"
+          style="height: 150px margin: 0 auto !important;"
+        />
 
-          <div class="col text-center">
-            <i class="far fa-play-circle text-light display-4"></i>
-          </div>
+        <div v-if="!carregando">
 
-          <div class="col text-center" @click="reproduzir(1)">
-            <i class="fas fa-chevron-right text-light display-4"></i>
+          <div class="row m-1">
+            <div class="col text-center" @click="reproduzir(-1)">
+              <i class="fas fa-chevron-left text-light display-4"></i>
+            </div>
+
+            <div class="col text-center">
+              <i class="far fa-play-circle text-light display-4"></i>
+            </div>
+
+            <div class="col text-center" @click="reproduzir(1)">
+              <i class="fas fa-chevron-right text-light display-4"></i>
+            </div>
           </div>
-        </div>
-        <div class="row text-light text-center h3 m-3">
-          <div class="col text-center" style="font-size: 15px;">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              v-model="ver.marker"
-            /> <span> Ver pontos</span>
+          <div class="row text-light text-center h3 m-3">
+            <div class="col text-center" style="font-size: 15px;">
+              <input type="checkbox" class="form-check-input" v-model="ver.marker" />
+              <span>Ver pontos</span>
+            </div>
           </div>
         </div>
       </div>
@@ -99,8 +94,7 @@ export default {
         marker: true
       },
       center: { lat: -3.76825, lng: -38.566362 },
-      zoom: 13,
-      horaatual: "",
+      zoom: 11,
       markers: [],
       markersReserva: [],
       ponto: 0,
@@ -111,14 +105,6 @@ export default {
     };
   },
   watch: {
-    modo: function() {
-      if (this.modo != "passando") {
-        this.modo = "passando";
-        this.ver.linha = true;
-        this.markersLine.pop();
-        this.markers.pop();
-      }
-    }
   },
   mounted() {
     this.geolocate();
@@ -134,13 +120,17 @@ export default {
     reproduzir($valor) {
       this.modo = "passando";
 
-      this.markers.pop();
-      this.markers.push(this.markersReserva[this.ponto])
-      this.markersLine.push({ lat: this.markersReserva[this.ponto].latitude,lng: this.markersReserva[this.ponto].longitude})
-      this.center = { lat: this.markersReserva[this.ponto].latitude,lng: this.markersReserva[this.ponto].longitude}
-      this.horaatual = this.markersReserva[this.ponto].dataehora
-      this.zoom = 18
-      this.abrirJanela(this.markersReserva[this.ponto])
+      this.markers = [];
+      this.markersReserva[this.ponto].tipo == "replay";
+      this.markers.push(this.markersReserva[this.ponto]);
+      this.center = {
+        lat: this.markersReserva[this.ponto].latitude,
+        lng: this.markersReserva[this.ponto].longitude
+      };
+      this.horaatual = this.markersReserva[this.ponto].dataehora;
+      this.zoom = 15;
+
+      this.abrirJanela(this.markersReserva[this.ponto]);
 
       if (this.ponto == 0 && $valor < 0) {
         alert("Você está na primeira posição");
@@ -167,8 +157,9 @@ export default {
       }
     },
     posicaoperiodo(dados) {
-      this.atualizar = false
-      this.markers.pop()
+      this.atualizar = false;
+      this.carregando = true;
+      this.markers.pop();
       axios
         .post("/posicaoperiodo", dados)
         .then(response => {
@@ -177,15 +168,19 @@ export default {
               lat: parseFloat(item.latitude),
               lng: parseFloat(item.longitude)
             });
-            item.latitude = parseFloat(item.latitude);
-            item.longitude = parseFloat(item.longitude);
-            this.markers.push(item);
+            item.latitude = parseFloat(item.latitude)
+            item.longitude = parseFloat(item.longitude)
+            item.tipo = "replay"
+            this.markers.push(item)
           });
           this.markersReserva = this.markers
-          this.carregando = false
           this.ver.linha = true
-          this.center = { lat: this.markers[this.markers.length - 1].latitude,lng: this.markers[this.markers.length - 1].longitude };
+          this.center = {
+            lat: this.markers[this.markers.length - 1].latitude,
+            lng: this.markers[this.markers.length - 1].longitude
+          }
           this.zoom = 15
+          this.carregando = false
         })
         .catch(error => {
           console.error("error: ", error);
@@ -205,8 +200,8 @@ export default {
                 this.abrirJanela(item);
               }
             }
-            item.latitude = parseFloat(item.latitude)
-            item.longitude = parseFloat(item.longitude)
+            item.latitude = parseFloat(item.latitude);
+            item.longitude = parseFloat(item.longitude);
             this.markers.push(item);
           });
         })
@@ -255,8 +250,8 @@ export default {
                 this.abrirJanela(item);
               }
             }
-           item.latitude = parseFloat(item.latitude)
-            item.longitude = parseFloat(item.longitude)
+            item.latitude = parseFloat(item.latitude);
+            item.longitude = parseFloat(item.longitude);
 
             this.markers.push(item);
           });

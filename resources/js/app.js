@@ -10,7 +10,7 @@ import eventBus from './evento'
 Vue.use(eventBus)
 
 /**
- * The following block of code may be used to automatically register your
+ * The following block of code may be sed to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
  *

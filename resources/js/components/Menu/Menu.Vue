@@ -15,6 +15,7 @@
       aria-controls="conteudoNavbarSuportado"
       aria-expanded="false"
       aria-label="Alterna navegação"
+      id="btnMenu"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -84,7 +85,7 @@
             </select>
           </div>
         </li>
-        <li v-if="opcao == 'replay'" class="nav-item m-1">
+        <li v-if="opcao == 'replay'" class="nav-item m-1" >
           <input
             class="form-control text-center"
             type="date"
@@ -160,12 +161,14 @@ export default {
         this.dados.veiculo > 0
       ) {
         this.$eventBus.$emit("replay", this.dados);
+         $("#btnMenu").trigger('click')
       } else {
         alert("Preencha todos os dados!!!");
       }
     },
     replay() {
       this.opcao = "replay";
+      window.requestFullScreen();
     }
   }
 };

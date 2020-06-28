@@ -8,11 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<<<<<<< HEAD
     <title>{{ config('app.name', 'Sys_PRT') }}</title>
-=======
-    <title>PRT</title>
->>>>>>> 6755055f78f93b00b45a22ad7aa2e7f01a12c642
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -29,12 +25,13 @@
             opacity: 1;
             transition: all 2s ease-in;
         }
+
         .fundo {
             background: linear-gradient(50deg, #0d4a8e, #0e2e1a) no-repeat;
             overflow: unset;
         }
 
-        i:hover{
+        i:hover {
             font-size: 70px;
             transition: all 0.5s ease;
         }
@@ -52,34 +49,36 @@
     </div>
 
     <script src="https://kit.fontawesome.com/15d9aa85c2.js" crossorigin="anonymous"></script>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+
+            //Função para colocar o navegador em tela inteira
+            function requestFullScreen() {
+
+                var el = document.body;
+
+                // Supports most browsers and their versions.
+                var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen ||
+                    el.mozRequestFullScreen || el.msRequestFullScreen;
+
+                if (requestMethod) {
+
+                    // Native full screen.
+                    requestMethod.call(el);
+
+                } else if (typeof window.ActiveXObject !== "undefined") {
+
+                    // Older IE.
+                    var wscript = new ActiveXObject("WScript.Shell");
+
+                    if (wscript !== null) {
+                        wscript.SendKeys("{F11}");
+                    }
+                }
+            }
+
+    </script>
 </body>
 
 
-<script type="text/javascript" >
-
-$(()=>{
-    var el = document.body;
-
-// Supports most browsers and their versions.
-var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen ||
-    el.mozRequestFullScreen || el.msRequestFullScreen;
-
-if (requestMethod) {
-
-    // Native full screen.
-    requestMethod.call(el);
-
-} else if (typeof window.ActiveXObject !== "undefined") {
-
-    // Older IE.
-    var wscript = new ActiveXObject("WScript.Shell");
-
-    if (wscript !== null) {
-        wscript.SendKeys("{F11}");
-    }
-}
-})
-
-
-</script>
 </html>
