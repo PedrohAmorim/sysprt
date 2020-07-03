@@ -19,6 +19,7 @@ class Veiculo extends Model
         'idModulo',
         'numero',
         'descricao',
-        'tipo'
+        'tipo',
+        'placa'
     ];
 }

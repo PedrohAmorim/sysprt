@@ -25,4 +25,5 @@ Route::get('/ultimaposicao', 'VeiculosAoVivoController@ultimaposicao');
 Route::post('/posicaoperiodo', 'ReplayController@periodo');
 Route::get('/pegarveiculos','ReplayController@pegarVeiculos');
 Route::get('/apresentacao','ApresentacaoController@index');
-Route::get('/veiculos','VeiculoController@index');
+Route::get('/veiculo','VeiculoController@index');
+Route::post('/veiculo/salvar','VeiculoController@salvar');

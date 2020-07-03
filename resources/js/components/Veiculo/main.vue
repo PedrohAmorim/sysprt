@@ -1,11 +1,56 @@
 
 <template>
   <div class="container p-2">
-    <select v-model="selectVeiculo.id" @changed="veicSelect()" class="form-control">
-      <option v-for="veiculo in veiculos" :value="veiculo.id">{{veiculo.descricao}}</option>
+    <select v-model="select" class="form-control">
+      <option v-for="(veiculo,key) in veiculos" :value="key">{{veiculo.descricao}}</option>
     </select>
-
-    <div class="row"></div>
+    <section id="replay-map"  class="fixed-bottom " style="z-index: 3;">
+          <button v-if="!navegador_app()" class="bg-light col rounded text-primary h2 border-light " @click="telacheia()">
+             <i class="fas fa-expand"></i>
+            </button>
+    </section>
+    <div class="container">
+      <br />
+      <form action="/veiculo/salvar" method="post" v-if="selectVeiculo.id != null">
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-lg-6">
+            <label for="inputEmail4">Numero</label>
+            <input
+              type="number"
+              class="form-control"
+              v-model="selectVeiculo.data.numero"
+              placeholder="1234"
+            />
+          </div>
+          <div class="form-group col-sm-6 col-lg-6">
+            <label for="inputPassword4">Descrição</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="selectVeiculo.data.descricao"
+              placeholder="Descrição"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputAddress">Tipo</label>
+          <select class="form-control" v-model="selectVeiculo.data.tipo">
+            <option value="carro">carro</option>
+            <option value="moto">moto</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="inputAddress2">Placa</label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="selectVeiculo.data.placa"
+            placeholder="XXX-0000"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary" @click.prevent="salvar()">Salvar</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -14,16 +59,26 @@ export default {
   data() {
     return {
       veiculos: [],
+      select: null,
       selectVeiculo: {
         id: null,
-        data: null,
+        data: {
+          numero: null,
+          descricao: null,
+          tipo: null,
+          placa: null
+        }
       }
     };
   },
   mounted() {
     this.pegarVeiculos();
   },
-  watch: {},
+  watch: {
+      select(){
+          this.veicSelect(this.select)
+      }
+  },
   methods: {
     pegarVeiculos() {
       axios
@@ -33,14 +88,31 @@ export default {
         })
         .catch(error => {});
     },
-    veicSelect() {
-    setTimeout(() => {
-      this.veiculos.map(veic => {
-        if (veic.id == this.selectVeiculo.id) {
-            this.selectVeiculo.data = veic
-        }
-      })
-    },200)
+    veicSelect(id) {
+      setTimeout(() => {
+
+         this.selectVeiculo.data = this.veiculos[id]
+         this.selectVeiculo.id = id
+      }, 200);
+    },
+     salvar(){
+
+     if(this.select != null){
+         axios.post('/veiculo/salvar',this.selectVeiculo.data)
+         .then(resultado => {
+
+             alert('Alterações salvas!')
+            window.location.href = '/home'
+         }).catch(error => {
+             alert('Houve um erro ao tentar modificar o veículo' + error)
+         })
+     }
+
+    },
+    navegador_app(){
+        return window.navegador_app()
+    }, telacheia (){
+        window.requestFullScreen()
     }
   }
 };

@@ -1983,6 +1983,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__, {
@@ -2464,20 +2465,75 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       veiculos: [],
+      select: null,
       selectVeiculo: {
         id: null,
-        data: null
+        data: {
+          numero: null,
+          descricao: null,
+          tipo: null,
+          placa: null
+        }
       }
     };
   },
   mounted: function mounted() {
     this.pegarVeiculos();
   },
-  watch: {},
+  watch: {
+    select: function select() {
+      this.veicSelect(this.select);
+    }
+  },
   methods: {
     pegarVeiculos: function pegarVeiculos() {
       var _this = this;
@@ -2486,16 +2542,29 @@ __webpack_require__.r(__webpack_exports__);
         _this.veiculos = resultado.data;
       })["catch"](function (error) {});
     },
-    veicSelect: function veicSelect() {
+    veicSelect: function veicSelect(id) {
       var _this2 = this;
 
       setTimeout(function () {
-        _this2.veiculos.map(function (veic) {
-          if (veic.id == _this2.selectVeiculo.id) {
-            _this2.selectVeiculo.data = veic;
-          }
-        });
+        _this2.selectVeiculo.data = _this2.veiculos[id];
+        _this2.selectVeiculo.id = id;
       }, 200);
+    },
+    salvar: function salvar() {
+      if (this.select != null) {
+        axios.post('/veiculo/salvar', this.selectVeiculo.data).then(function (resultado) {
+          alert('Alterações salvas!');
+          window.location.href = '/home';
+        })["catch"](function (error) {
+          alert('Houve um erro ao tentar modificar o veículo' + error);
+        });
+      }
+    },
+    navegador_app: function navegador_app() {
+      return window.navegador_app();
+    },
+    telacheia: function telacheia() {
+      window.requestFullScreen();
     }
   }
 });
@@ -39608,7 +39677,7 @@ var staticRenderFns = [
       "a",
       {
         staticClass: "dropdown-item btn btn-light",
-        attrs: { href: "/veiculos" }
+        attrs: { href: "/veiculo" }
       },
       [
         _c("i", { staticClass: "fas fa-car-side" }),
@@ -39661,15 +39730,12 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.selectVeiculo.id,
-            expression: "selectVeiculo.id"
+            value: _vm.select,
+            expression: "select"
           }
         ],
         staticClass: "form-control",
         on: {
-          changed: function($event) {
-            return _vm.veicSelect()
-          },
           change: function($event) {
             var $$selectedVal = Array.prototype.filter
               .call($event.target.options, function(o) {
@@ -39679,23 +39745,211 @@ var render = function() {
                 var val = "_value" in o ? o._value : o.value
                 return val
               })
-            _vm.$set(
-              _vm.selectVeiculo,
-              "id",
-              $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-            )
+            _vm.select = $event.target.multiple
+              ? $$selectedVal
+              : $$selectedVal[0]
           }
         }
       },
-      _vm._l(_vm.veiculos, function(veiculo) {
-        return _c("option", { domProps: { value: veiculo.id } }, [
+      _vm._l(_vm.veiculos, function(veiculo, key) {
+        return _c("option", { domProps: { value: key } }, [
           _vm._v(_vm._s(veiculo.descricao))
         ])
       }),
       0
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "row" })
+    _c(
+      "section",
+      {
+        staticClass: "fixed-bottom ",
+        staticStyle: { "z-index": "3" },
+        attrs: { id: "replay-map" }
+      },
+      [
+        !_vm.navegador_app()
+          ? _c(
+              "button",
+              {
+                staticClass:
+                  "bg-light col rounded text-primary h2 border-light ",
+                on: {
+                  click: function($event) {
+                    return _vm.telacheia()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fas fa-expand" })]
+            )
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c("br"),
+      _vm._v(" "),
+      _vm.selectVeiculo.id != null
+        ? _c("form", { attrs: { action: "/veiculo/salvar", method: "post" } }, [
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-sm-6 col-lg-6" }, [
+                _c("label", { attrs: { for: "inputEmail4" } }, [
+                  _vm._v("Numero")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selectVeiculo.data.numero,
+                      expression: "selectVeiculo.data.numero"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "number", placeholder: "1234" },
+                  domProps: { value: _vm.selectVeiculo.data.numero },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.selectVeiculo.data,
+                        "numero",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-sm-6 col-lg-6" }, [
+                _c("label", { attrs: { for: "inputPassword4" } }, [
+                  _vm._v("Descrição")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selectVeiculo.data.descricao,
+                      expression: "selectVeiculo.data.descricao"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Descrição" },
+                  domProps: { value: _vm.selectVeiculo.data.descricao },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.selectVeiculo.data,
+                        "descricao",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputAddress" } }, [_vm._v("Tipo")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selectVeiculo.data.tipo,
+                      expression: "selectVeiculo.data.tipo"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.selectVeiculo.data,
+                        "tipo",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "carro" } }, [
+                    _vm._v("carro")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "moto" } }, [_vm._v("moto")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputAddress2" } }, [
+                _vm._v("Placa")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectVeiculo.data.placa,
+                    expression: "selectVeiculo.data.placa"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "XXX-0000" },
+                domProps: { value: _vm.selectVeiculo.data.placa },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.selectVeiculo.data,
+                      "placa",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "submit" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.salvar()
+                  }
+                }
+              },
+              [_vm._v("Salvar")]
+            )
+          ])
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []

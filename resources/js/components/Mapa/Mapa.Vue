@@ -4,6 +4,7 @@
         <i class="fas fa-cog fa-pulse icon"></i>
       </div>
     <section id="replay-map"  class="fixed-bottom " style="z-index: 3;">
+
       <div  id="replay-controls" class="row">
             <button
               type="button"

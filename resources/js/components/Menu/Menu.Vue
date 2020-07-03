@@ -60,7 +60,7 @@
                   <i class="fas fa-retweet"></i>
                   <span>Replay</span>
                 </a>
-                <a class="dropdown-item btn btn-light" href="/veiculos">
+                <a class="dropdown-item btn btn-light" href="/veiculo">
                   <i class="fas fa-car-side"></i>
                   <span>Meus Veículos</span>
                 </a>
