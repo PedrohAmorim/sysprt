@@ -2453,11 +2453,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2469,7 +2464,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     pegarVeiculos: function pegarVeiculos() {
-      axios.get('/pegarveiculos').then(function (resultado) {
+      axios.get("/pegarveiculos").then(function (resultado) {
         veiculos = resultado;
       })["catch"](function (error) {});
     }
@@ -39804,7 +39799,7 @@ var render = function() {
       "select",
       { staticClass: "form-control" },
       _vm._l(_vm.veiculos, function(item) {
-        return _c("option")
+        return _c("option", [_vm._v(_vm._s(item.descricao))])
       }),
       0
     )
@@ -55084,13 +55079,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
 __webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
-=======
-__webpack_require__(/*! C:\xampp\htdocs\sysprt\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
->>>>>>> 50b41dd7017f92c61fd76cb0432918465d8374c3
 
 
 /***/ })
