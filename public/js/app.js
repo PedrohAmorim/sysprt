@@ -2440,9 +2440,41 @@ var eventBus = new Vue();
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************************************************************************************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\pedro\\Desktop\\sysprt\\resources\\js\\components\\Veiculo\\main.vue: Unexpected token (26:18)\n\n\u001b[0m \u001b[90m 24 | \u001b[39m}\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 25 | \u001b[39mmethods\u001b[33m:\u001b[39m {\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 | \u001b[39m    pegarVeiculos(\u001b[32m'/pegarveiculos'\u001b[39m){\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 27 | \u001b[39m        axios\u001b[33m.\u001b[39mget()\u001b[0m\n\u001b[0m \u001b[90m 28 | \u001b[39m        \u001b[33m.\u001b[39mthen( resultado \u001b[33m=>\u001b[39m{\u001b[0m\n\u001b[0m \u001b[90m 29 | \u001b[39m\u001b[0m\n    at Parser._raise (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:746:17)\n    at Parser.raiseWithData (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:739:17)\n    at Parser.raise (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:733:17)\n    at Parser.unexpected (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:8807:16)\n    at Parser.parseIdentifierName (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10823:18)\n    at Parser.parseIdentifier (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10800:23)\n    at Parser.parseBindingAtom (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9171:17)\n    at Parser.parseMaybeDefault (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9231:25)\n    at Parser.parseAssignableListItem (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9213:23)\n    at Parser.parseBindingList (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9205:24)\n    at Parser.parseFunctionParams (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:11894:24)\n    at Parser.parseMethod (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10652:10)\n    at Parser.parseObjectMethod (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10569:19)\n    at Parser.parseObjPropValue (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10611:23)\n    at Parser.parseObjectMember (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10535:10)\n    at Parser.parseObj (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10448:25)\n    at Parser.parseExprAtom (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10055:28)\n    at Parser.parseExprSubscripts (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9656:23)\n    at Parser.parseMaybeUnary (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9636:21)\n    at Parser.parseExprOps (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9506:23)\n    at Parser.parseMaybeConditional (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9479:23)\n    at Parser.parseMaybeAssign (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9434:21)\n    at Parser.parseObjectProperty (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10586:101)\n    at Parser.parseObjPropValue (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10611:101)\n    at Parser.parseObjectMember (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10535:10)\n    at Parser.parseObj (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10448:25)\n    at Parser.parseExprAtom (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10055:28)\n    at Parser.parseExprSubscripts (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9656:23)\n    at Parser.parseMaybeUnary (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9636:21)\n    at Parser.parseExprOps (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9506:23)\n    at Parser.parseMaybeConditional (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9479:23)\n    at Parser.parseMaybeAssign (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9434:21)\n    at Parser.parseExportDefaultExpression (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:12358:24)\n    at Parser.parseExport (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:12260:31)\n    at Parser.parseStatementContent (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:11260:27)\n    at Parser.parseStatement (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:11156:17)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      veiculos: []
+    };
+  },
+  mounted: function mounted() {
+    this.pegarVeiculos;
+  },
+  methods: {
+    pegarVeiculos: function pegarVeiculos() {
+      axios.get('/pegarveiculos').then(function (resultado) {
+        veiculos = resultado;
+      })["catch"](function (error) {});
+    }
+  }
+});
 
 /***/ }),
 
@@ -55052,8 +55084,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\inetpub\wwwroot\sysprt\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\inetpub\wwwroot\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

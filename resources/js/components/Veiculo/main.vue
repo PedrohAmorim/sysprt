@@ -23,8 +23,8 @@ data (){
 this.pegarVeiculos
 },
 methods: {
-    pegarVeiculos('/pegarveiculos'){
-        axios.get()
+    pegarVeiculos(){
+        axios.get('/pegarveiculos')
         .then( resultado =>{
 
          veiculos = resultado
