@@ -33,7 +33,7 @@
         }
 
         .corprt {
-            color:  #0d4a8e ;
+            color: #0d4a8e;
         }
 
         i:hover {
@@ -49,7 +49,6 @@
 
 <body>
     <div id="app">
-
         <menu-principal></menu-principal>
 
         <main>
@@ -61,31 +60,33 @@
     <script src="js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript">
 
-            //Função para colocar o navegador em tela inteira
-            function requestFullScreen() {
+//             $('#navegador').html(navigator.userAgent.toLowerCase())
 
-                var el = document.body;
 
-                // Supports most browsers and their versions.
-                var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen ||
-                    el.mozRequestFullScreen || el.msRequestFullScreen;
+        //Função para colocar o navegador em tela inteira
+        function requestFullScreen() {
 
-                if (requestMethod) {
+            var el = document.body;
 
-                    // Native full screen.
-                    requestMethod.call(el);
+            // Supports most browsers and their versions.
+            var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen ||
+                el.mozRequestFullScreen || el.msRequestFullScreen;
 
-                } else if (typeof window.ActiveXObject !== "undefined") {
+            if (requestMethod) {
 
-                    // Older IE.
-                    var wscript = new ActiveXObject("WScript.Shell");
+                // Native full screen.
+                requestMethod.call(el);
 
-                    if (wscript !== null) {
-                        wscript.SendKeys("{F11}");
-                    }
+            } else if (typeof window.ActiveXObject !== "undefined") {
+
+                // Older IE.
+                var wscript = new ActiveXObject("WScript.Shell");
+
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}");
                 }
             }
-
+        }
     </script>
 </body>
 

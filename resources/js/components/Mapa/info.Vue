@@ -1,6 +1,6 @@
 <template>
 
-  <div class="info" style="font-size: 15px;">
+  <div class="info" style="font-size: 15px; max-width: 200px !important;">
     <label class="container border-bottom border-primary p-1">
 
       <i v-if="data.tipo == 'onibus'" class="fas fa-bus"></i>
@@ -25,7 +25,7 @@
       <p class="font-weight-light">
         <span class="text-primary font-weight-bold">
           <i class="far fa-clock"></i>
-          <span>Hora:</span>
+          <span>Data e Hora:</span>
         </span>
         <br />
         {{data.dataehora}}
@@ -33,26 +33,11 @@
     </label>
     <br />
     <label >
-      <i class="fas fa-search-location text-primary font-weight-bold" style="text-size: 15px;"></i>
-      <span class="text-primary font-weight-bold">Posicao:</span>
-      <br />
+     <i class="fas fa-search-location text-primary"></i>
+     <span class="text-primary font-weight-bold">Endereço:</span>
+       <br />
       <p class="font-weight-light">
-        <span class="text-secondary">Latitude:</span>
-        {{data.position.lat}}
-        <br />
-        <span class="text-secondary">Longitude:</span>
-        {{data.position.lng}}
-      </p>
-    </label>
-    <br />
-    <label >
-      <p class="font-weight-light">
-        <span class="text-primary font-weight-bold">
-          <i class="fas fa-search-location text-primary"></i>
-          <span>Endereço:</span>
-          <br />
-        </span>
-
+        {{endereco}}
       </p>
     </label>
   </div>
@@ -63,7 +48,28 @@ export default {
   props: ["data"],
 
   data() {
-    return {};
+    return {
+        endereco:null
+    }
+  },mounted(){
+  this.carregarendereco()
+  },
+  methods:{
+      carregarendereco(){
+          $.ajax({
+              type: 'GET',
+              url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+this.data.position.lat+','+this.data.position.lng+'&key=AIzaSyBjRsY1NNPFms-CxPIyO6wZSrg-Hj_GpEw',
+              success: resultado =>{
+                  this.endereco =
+                  //rua
+                  resultado.results[0].address_components[1].long_name
+                  //numero
+                  + ',' + resultado.results[0].address_components[0].long_name
+                  //bairro
+                  + ' - ' + resultado.results[0].address_components[2].long_name
+              }
+          })
+      }
   }
 };
 </script>

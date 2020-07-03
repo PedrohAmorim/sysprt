@@ -23,7 +23,6 @@ Vue.use(eventBus)
 Vue.component('menu-principal', require('./components/Menu/Menu.vue').default);
 Vue.component('mapa', require('./components/Mapa/Mapa.vue').default);
 Vue.component('info', require('./components/Mapa/info.vue').default);
-Vue.component('replay', require('./components/replay/Mapa.vue').default);
 Vue.component('veiculos', require('./components/Veiculo/main.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
