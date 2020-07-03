@@ -1983,12 +1983,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__, {
@@ -2003,6 +1997,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
   data: function data() {
     return {
       selectPosicao: "",
+      isFirst: false,
+      isLast: false,
       infoWindow: {
         data: null,
         open: false,
@@ -2028,14 +2024,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
       markersLine: [],
       modo: "normal",
       atualizar: true,
-      carregando: false
+      carregando: false,
+      options: {
+        fullscreenControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        mapTypeControl: false
+      }
     };
   },
   watch: {},
   mounted: function mounted() {
     var _this = this;
 
-    this.geolocate();
+    this.aovivo();
     this.$eventBus.$on(["replay"], function (data) {
       _this.carregando = true;
       _this.atualizar = false;
@@ -2047,21 +2049,22 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
   },
   methods: {
     reproduzir: function reproduzir($valor) {
-      this.modo = "passando";
       this.markers = [];
       this.markersReserva[this.ponto].tipo == "replay";
       this.markers.push(this.markersReserva[this.ponto]);
-      this.center = {
-        lat: this.markersReserva[this.ponto].latitude,
-        lng: this.markersReserva[this.ponto].longitude
-      };
-      this.horaatual = this.markersReserva[this.ponto].dataehora;
-      this.zoom = 15;
+      /*  this.center = {
+          lat: this.markersReserva[this.ponto].latitude,
+          lng: this.markersReserva[this.ponto].longitude
+        };*/
+
+      this.zoom = 16;
       this.abrirJanela(this.markersReserva[this.ponto]);
 
       if (this.ponto == 0 && $valor < 0) {
         alert("Você está na primeira posição");
+        this.isFirst = true;
       } else if (this.ponto == this.markersReserva.lenght - 1 && this.valor > 0) {
+        this.isLast = true;
         alert("Você está na ultima posição");
       } else {
         this.ponto = this.ponto + $valor;
@@ -2087,7 +2090,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
 
       this.atualizar = false;
       this.carregando = true;
-      this.markers.pop();
+      this.markers = [];
       axios.post("/posicaoperiodo", dados).then(function (response) {
         _toConsumableArray(response.data).forEach(function (item) {
           _this2.markersLine.push({
@@ -2114,29 +2117,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
         console.error("error: ", error);
       });
     },
-    mostrar: function mostrar(dados) {
-      var _this3 = this;
-
-      axios.post("/ultimaposicao").then(function (response) {
-        _toConsumableArray(response.data).forEach(function (item) {
-          if (_this3.infoWindow.data != null) {
-            //Atualizar o Info Window se ele estiver aberto
-            if (item.descricao == _this3.infoWindow.data.nome && _this3.infoWindow.open) {
-              _this3.abrirJanela(item);
-            }
-          }
-
-          item.latitude = parseFloat(item.latitude);
-          item.longitude = parseFloat(item.longitude);
-
-          _this3.markers.push(item);
-        });
-      })["catch"](function (error) {
-        console.error("error: ", error);
-      });
-    },
     abrirJanela: function abrirJanela(item) {
-      var _this4 = this;
+      var _this3 = this;
 
       var $dados = {
         position: {
@@ -2151,43 +2133,46 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
       };
       this.infoWindow.open = false;
       setTimeout(function () {
-        _this4.infoWindow.options.pixelOffset.width = 0;
-        _this4.infoWindow.options.pixelOffset.height = -40;
-        _this4.infoWindow.position = $dados.position;
-        _this4.infoWindow.data = $dados;
-        _this4.infoWindow.open = true;
+        _this3.infoWindow.options.pixelOffset.width = 0;
+        _this3.infoWindow.options.pixelOffset.height = -40;
+        _this3.infoWindow.position = $dados.position;
+        _this3.infoWindow.data = $dados;
+        _this3.infoWindow.open = true;
       }, 100);
     },
     tempo: function tempo() {
-      var _this5 = this;
+      var _this4 = this;
 
       setTimeout(function () {
-        if (_this5.atualizar) _this5.geolocate();
+        if (_this4.atualizar) _this4.aovivo();
       }, 20000);
     },
-    geolocate: function geolocate() {
-      var _this6 = this;
+    aovivo: function aovivo() {
+      var _this5 = this;
 
       axios.get("/ultimaposicao").then(function (response) {
-        _this6.markers = [];
+        _this5.markers = [];
 
         _toConsumableArray(response.data).forEach(function (item) {
-          if (_this6.infoWindow.data != null) {
+          if (_this5.infoWindow.data != null) {
             //Atualizar o Info Window se ele estiver aberto
-            if (item.descricao == _this6.infoWindow.data.nome && _this6.infoWindow.open) {
-              _this6.abrirJanela(item);
+            if (item.descricao == _this5.infoWindow.data.nome && _this5.infoWindow.open) {
+              _this5.abrirJanela(item);
             }
           }
 
           item.latitude = parseFloat(item.latitude);
           item.longitude = parseFloat(item.longitude);
 
-          _this6.markers.push(item);
+          _this5.markers.push(item);
         });
       })["catch"](function (error) {
         console.error("error: ", error);
       });
       this.tempo();
+    },
+    telacheia: function telacheia() {
+      window.requestFullScreen();
     }
   }
 });
@@ -2444,10 +2429,20 @@ var eventBus = new Vue();
     },
     replay: function replay() {
       this.opcao = "replay";
-      window.requestFullScreen();
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\pedro\\Desktop\\sysprt\\resources\\js\\components\\Veiculo\\main.vue: Unexpected token (26:18)\n\n\u001b[0m \u001b[90m 24 | \u001b[39m}\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 25 | \u001b[39mmethods\u001b[33m:\u001b[39m {\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 | \u001b[39m    pegarVeiculos(\u001b[32m'/pegarveiculos'\u001b[39m){\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 27 | \u001b[39m        axios\u001b[33m.\u001b[39mget()\u001b[0m\n\u001b[0m \u001b[90m 28 | \u001b[39m        \u001b[33m.\u001b[39mthen( resultado \u001b[33m=>\u001b[39m{\u001b[0m\n\u001b[0m \u001b[90m 29 | \u001b[39m\u001b[0m\n    at Parser._raise (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:746:17)\n    at Parser.raiseWithData (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:739:17)\n    at Parser.raise (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:733:17)\n    at Parser.unexpected (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:8807:16)\n    at Parser.parseIdentifierName (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10823:18)\n    at Parser.parseIdentifier (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10800:23)\n    at Parser.parseBindingAtom (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9171:17)\n    at Parser.parseMaybeDefault (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9231:25)\n    at Parser.parseAssignableListItem (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9213:23)\n    at Parser.parseBindingList (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9205:24)\n    at Parser.parseFunctionParams (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:11894:24)\n    at Parser.parseMethod (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10652:10)\n    at Parser.parseObjectMethod (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10569:19)\n    at Parser.parseObjPropValue (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10611:23)\n    at Parser.parseObjectMember (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10535:10)\n    at Parser.parseObj (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10448:25)\n    at Parser.parseExprAtom (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10055:28)\n    at Parser.parseExprSubscripts (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9656:23)\n    at Parser.parseMaybeUnary (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9636:21)\n    at Parser.parseExprOps (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9506:23)\n    at Parser.parseMaybeConditional (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9479:23)\n    at Parser.parseMaybeAssign (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9434:21)\n    at Parser.parseObjectProperty (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10586:101)\n    at Parser.parseObjPropValue (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10611:101)\n    at Parser.parseObjectMember (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10535:10)\n    at Parser.parseObj (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10448:25)\n    at Parser.parseExprAtom (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:10055:28)\n    at Parser.parseExprSubscripts (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9656:23)\n    at Parser.parseMaybeUnary (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9636:21)\n    at Parser.parseExprOps (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9506:23)\n    at Parser.parseMaybeConditional (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9479:23)\n    at Parser.parseMaybeAssign (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:9434:21)\n    at Parser.parseExportDefaultExpression (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:12358:24)\n    at Parser.parseExport (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:12260:31)\n    at Parser.parseStatementContent (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:11260:27)\n    at Parser.parseStatement (C:\\Users\\pedro\\Desktop\\sysprt\\node_modules\\@babel\\parser\\lib\\index.js:11156:17)");
 
 /***/ }),
 
@@ -39085,206 +39080,151 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "container-fluid p-0" },
-      [
-        _c(
-          "gmap-map",
-          {
-            style: { width: "100%", height: "90vh" },
-            attrs: { center: _vm.center, zoom: _vm.zoom }
-          },
-          [
-            _vm.ver.linha
-              ? _c("gmap-polyline", {
-                  attrs: {
-                    path: _vm.markersLine,
-                    options: { strokeColor: "blue" }
-                  }
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._l(_vm.markers, function(m, index) {
-              return _vm.ver.marker
-                ? _c("gmap-marker", {
-                    key: index,
-                    attrs: {
-                      position: { lat: m.latitude, lng: m.longitude },
-                      icon: _vm.icone(m.tipo),
-                      clickable: true,
-                      title: m.nome
-                    },
+  return _c(
+    "div",
+    { staticClass: "position-relative" },
+    [
+      _vm.carregando
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "container-fluid text-center display-1 corprt position-absolute",
+              staticStyle: { "z-index": "2" }
+            },
+            [_c("i", { staticClass: "fas fa-asterisk fa-pulse icon" })]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "section",
+        {
+          staticClass: "fixed-bottom ",
+          staticStyle: { "z-index": "3" },
+          attrs: { id: "replay-map" }
+        },
+        [
+          _c("div", { staticClass: "row", attrs: { id: "replay-controls" } }, [
+            _vm.modo == "replay"
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-light text-primary rounded border-light col h2",
+                    class: { disabled: _vm.isFirst },
+                    attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.abrirJanela(m)
+                        $event.preventDefault()
+                        return _vm.reproduzir(-1)
                       }
                     }
-                  })
-                : _vm._e()
-            }),
+                  },
+                  [_c("i", { staticClass: "fas fa-angle-double-left" })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.modo == "replay"
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-light text-primary rounded col h2 border-light ",
+                    class: { disabled: _vm.isLast },
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.reproduzir(1)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-angle-double-right" })]
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c(
-              "gmap-info-window",
+              "button",
               {
-                attrs: {
-                  options: _vm.infoWindow.options,
-                  opened: _vm.infoWindow.open,
-                  position: _vm.infoWindow.position,
-                  data: _vm.infoWindow.data
-                },
+                staticClass:
+                  "bg-light col rounded text-primary h2 border-light ",
                 on: {
-                  closeclick: function($event) {
-                    _vm.infoWindow.open = false
+                  click: function($event) {
+                    return _vm.telacheia()
                   }
                 }
               },
-              [
-                _vm.infoWindow.open
-                  ? _c("info", { attrs: { data: _vm.infoWindow.data } })
-                  : _vm._e()
-              ],
-              1
+              [_c("i", { staticClass: "fa fa-expand " })]
             )
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _vm.modo != "normal"
-          ? _c("div", { staticClass: "fixed-bottom fundo" }, [
-              _vm.carregando
-                ? _c("img", {
-                    staticStyle: { height: "150px margin: 0 auto !important" },
-                    attrs: { src: "img/carregando.gif" }
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              !_vm.carregando
-                ? _c("div", [
-                    _c("div", { staticClass: "row m-1" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "col text-center",
-                          on: {
-                            click: function($event) {
-                              return _vm.reproduzir(-1)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass:
-                              "fas fa-chevron-left text-light display-4"
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "col text-center",
-                          on: {
-                            click: function($event) {
-                              return _vm.reproduzir(1)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass:
-                              "fas fa-chevron-right text-light display-4"
-                          })
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "row text-light text-center h3 m-3" },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "col text-center",
-                            staticStyle: { "font-size": "15px" }
-                          },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.ver.marker,
-                                  expression: "ver.marker"
-                                }
-                              ],
-                              staticClass: "form-check-input",
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                checked: Array.isArray(_vm.ver.marker)
-                                  ? _vm._i(_vm.ver.marker, null) > -1
-                                  : _vm.ver.marker
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$a = _vm.ver.marker,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          _vm.ver,
-                                          "marker",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          _vm.ver,
-                                          "marker",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(_vm.ver, "marker", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("span", [_vm._v("Ver pontos")])
-                          ]
-                        )
-                      ]
-                    )
-                  ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "gmap-map",
+        {
+          style: { width: "100%", height: "90vh" },
+          attrs: { center: _vm.center, zoom: _vm.zoom, options: _vm.options }
+        },
+        [
+          _vm.ver.linha
+            ? _c("gmap-polyline", {
+                attrs: {
+                  path: _vm.markersLine,
+                  options: { strokeColor: "blue" }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.markers, function(m, index) {
+            return _vm.ver.marker
+              ? _c("gmap-marker", {
+                  key: index,
+                  attrs: {
+                    position: { lat: m.latitude, lng: m.longitude },
+                    icon: _vm.icone(m.tipo),
+                    clickable: true,
+                    title: m.nome
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.abrirJanela(m)
+                    }
+                  }
+                })
+              : _vm._e()
+          }),
+          _vm._v(" "),
+          _c(
+            "gmap-info-window",
+            {
+              attrs: {
+                options: _vm.infoWindow.options,
+                opened: _vm.infoWindow.open,
+                position: _vm.infoWindow.position,
+                data: _vm.infoWindow.data
+              },
+              on: {
+                closeclick: function($event) {
+                  _vm.infoWindow.open = false
+                }
+              }
+            },
+            [
+              _vm.infoWindow.open
+                ? _c("info", { attrs: { data: _vm.infoWindow.data } })
                 : _vm._e()
-            ])
-          : _vm._e()
-      ],
-      1
-    )
-  ])
+            ],
+            1
+          )
+        ],
+        2
+      )
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col text-center" }, [
-      _c("i", { staticClass: "far fa-play-circle text-light display-4" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39472,7 +39412,7 @@ var render = function() {
               "li",
               {
                 staticClass: "nav-item dropdown",
-                staticStyle: { width: "50vw !important", margin: "0 auto" }
+                staticStyle: { margin: "0 auto" }
               },
               [
                 _vm.opcao != "replay"
@@ -39547,7 +39487,7 @@ var render = function() {
                             }
                           },
                           [
-                            _c("i", { staticClass: "fas fa-clipboard-list" }),
+                            _c("i", { staticClass: "fas fa-retweet" }),
                             _vm._v(" "),
                             _c("span", [_vm._v("Replay")])
                           ]
@@ -39782,12 +39722,12 @@ var staticRenderFns = [
       "a",
       {
         staticClass: "dropdown-item btn btn-light",
-        attrs: { href: "/Motoristas" }
+        attrs: { href: "/veiculos" }
       },
       [
-        _c("i", { staticClass: "fas fa-location-arrow" }),
+        _c("i", { staticClass: "fas fa-car-side" }),
         _vm._v(" "),
-        _c("span", [_vm._v("Motoristas")])
+        _c("span", [_vm._v("Meus Veículos")])
       ]
     )
   },
@@ -39797,7 +39737,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "a",
-      { staticClass: "dropdown-item btn btn-light", attrs: { href: "#" } },
+      { staticClass: "dropdown-item btn btn-light", attrs: { href: "/" } },
       [
         _c("i", { staticClass: "fas fa-sign-out-alt" }),
         _vm._v(" "),
@@ -39806,6 +39746,39 @@ var staticRenderFns = [
     )
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Veiculo/main.vue?vue&type=template&id=30cfc724&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Veiculo/main.vue?vue&type=template&id=30cfc724& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "select",
+      { staticClass: "form-control" },
+      _vm._l(_vm.veiculos, function(item) {
+        return _c("option")
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -54629,6 +54602,7 @@ Vue.component('menu-principal', __webpack_require__(/*! ./components/Menu/Menu.v
 Vue.component('mapa', __webpack_require__(/*! ./components/Mapa/Mapa.vue */ "./resources/js/components/Mapa/Mapa.vue")["default"]);
 Vue.component('info', __webpack_require__(/*! ./components/Mapa/info.vue */ "./resources/js/components/Mapa/info.vue")["default"]);
 Vue.component('replay', __webpack_require__(/*! ./components/replay/Mapa.vue */ "./resources/js/components/replay/Mapa.vue")["default"]);
+Vue.component('veiculos', __webpack_require__(/*! ./components/Veiculo/main.vue */ "./resources/js/components/Veiculo/main.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -54892,6 +54866,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Menu_vue_vue_type_template_id_7cde42d4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Menu_vue_vue_type_template_id_7cde42d4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Veiculo/main.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/Veiculo/main.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main.vue?vue&type=template&id=30cfc724& */ "./resources/js/components/Veiculo/main.vue?vue&type=template&id=30cfc724&");
+/* harmony import */ var _main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main.vue?vue&type=script&lang=js& */ "./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Veiculo/main.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./main.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Veiculo/main.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Veiculo/main.vue?vue&type=template&id=30cfc724&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/Veiculo/main.vue?vue&type=template&id=30cfc724& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./main.vue?vue&type=template&id=30cfc724& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Veiculo/main.vue?vue&type=template&id=30cfc724&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

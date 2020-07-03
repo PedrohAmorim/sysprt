@@ -91,7 +91,7 @@ return [
             'driver' => 'sqlsrv',
             'host' => '142.44.203.34',
             'port' => '1433',
-            'database' => 'Testes',
+            'database' => 'Particular',
             'username' => 'Site',
             'password' => 'pP@1995ph',
             'prefix' => '',

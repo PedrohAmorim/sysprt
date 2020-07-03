@@ -32,9 +32,17 @@
             overflow: unset;
         }
 
+        .corprt {
+            color:  #0d4a8e ;
+        }
+
         i:hover {
-            font-size: 70px;
+            color: yellow;
             transition: all 0.5s ease;
+        }
+
+        .margin {
+            margin: 2px !important;
         }
     </style>
 </head>
