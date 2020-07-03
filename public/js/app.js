@@ -55084,8 +55084,13 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
+=======
+__webpack_require__(/*! C:\xampp\htdocs\sysprt\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
+>>>>>>> 50b41dd7017f92c61fd76cb0432918465d8374c3
 
 
 /***/ })
