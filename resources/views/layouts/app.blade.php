@@ -49,6 +49,8 @@
 
 <body>
     <div id="app">
+        <div id="navegador" class="row">
+        </div>
         <menu-principal></menu-principal>
 
         <main>
@@ -59,31 +61,29 @@
     <script src="https://kit.fontawesome.com/15d9aa85c2.js" crossorigin="anonymous"></script>
     <script src="js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript">
-
-//             $('#navegador').html(navigator.userAgent.toLowerCase())
+        function navegador_app() {
+            return navigator.userAgent.toLowerCase().includes('build/')
+        }
 
 
         //Função para colocar o navegador em tela inteira
         function requestFullScreen() {
-
-            var el = document.body;
-
-            // Supports most browsers and their versions.
-            var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen ||
-                el.mozRequestFullScreen || el.msRequestFullScreen;
-
-            if (requestMethod) {
-
-                // Native full screen.
-                requestMethod.call(el);
-
-            } else if (typeof window.ActiveXObject !== "undefined") {
-
-                // Older IE.
-                var wscript = new ActiveXObject("WScript.Shell");
-
-                if (wscript !== null) {
-                    wscript.SendKeys("{F11}");
+            if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+                (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                if (document.documentElement.requestFullScreen) {
+                    document.documentElement.requestFullScreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullScreen) {
+                    document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
                 }
             }
         }

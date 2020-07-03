@@ -2173,6 +2173,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
     },
     telacheia: function telacheia() {
       window.requestFullScreen();
+    },
+    navegador_app: function navegador_app() {
+      return window.navegador_app();
     }
   }
 });
@@ -38998,7 +39001,7 @@ var render = function() {
                 "container-fluid text-center display-1 corprt position-absolute",
               staticStyle: { "z-index": "2" }
             },
-            [_c("i", { staticClass: "fas fa-asterisk fa-pulse icon" })]
+            [_c("i", { staticClass: "fas fa-cog fa-pulse icon" })]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -39049,19 +39052,21 @@ var render = function() {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass:
-                  "bg-light col rounded text-primary h2 border-light ",
-                on: {
-                  click: function($event) {
-                    return _vm.telacheia()
-                  }
-                }
-              },
-              [_c("i", { staticClass: "fa fa-expand " })]
-            )
+            !_vm.navegador_app()
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-light col rounded text-primary h2 border-light ",
+                    on: {
+                      click: function($event) {
+                        return _vm.telacheia()
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fas fa-expand" })]
+                )
+              : _vm._e()
           ])
         ]
       ),

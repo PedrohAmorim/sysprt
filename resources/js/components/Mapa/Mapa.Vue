@@ -1,7 +1,7 @@
 <template>
   <div class="position-relative">
       <div v-if="carregando" class="container-fluid text-center display-1 corprt position-absolute"  style="z-index: 2;" >
-        <i class="fas fa-asterisk fa-pulse icon"></i>
+        <i class="fas fa-cog fa-pulse icon"></i>
       </div>
     <section id="replay-map"  class="fixed-bottom " style="z-index: 3;">
       <div  id="replay-controls" class="row">
@@ -19,8 +19,8 @@
               @click.prevent="reproduzir(1)"
               v-if="modo == 'replay'"
             ><i class="fas fa-angle-double-right"></i></button>
-            <button  class="bg-light col rounded text-primary h2 border-light " @click="telacheia()">
-              <i class="fa fa-expand "></i>
+            <button v-if="!navegador_app()" class="bg-light col rounded text-primary h2 border-light " @click="telacheia()">
+             <i class="fas fa-expand"></i>
             </button>
       </div>
     </section>
@@ -241,6 +241,8 @@ export default {
     },
     telacheia (){
         window.requestFullScreen()
+    },navegador_app(){
+        return window.navegador_app()
     }
   }
 };
