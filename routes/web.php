@@ -24,4 +24,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/ultimaposicao', 'VeiculosAoVivoController@ultimaposicao');
 Route::post('/posicaoperiodo', 'ReplayController@periodo');
 Route::get('/pegarveiculos','ReplayController@pegarVeiculos');
+Route::get('/apresentacao','ApresentacaoController@index');
 

@@ -34,22 +34,25 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6 offset-3" style="margin: 0 auto;">
-                <form method="POST" action="{{ route('login') }}" style="margin-top: 100px;">
+                <form method="POST" action="{{ route('login') }}" style="margin-top: 25vh;">
                     @csrf
                     <div class="text-center p-1">
-                        <img src="{{url('img/logo.png')}}" class="bg-light rounded" style="max-width: 150px;" />
+                        <img src="{{url('img/logo.png')}}" class="bg-light rounded" style="max-width: 100px;" />
                     </div>
                     <div class="form-group ">
-                        <label class="mb-0 display-4 text-center text-light">E-mail</label>
+                        <label class="mb-0 text-center text-light">E-mail</label>
                         <input type="email" class="form-control-plaintext text-center text-light border-bottom border-light" name="email" placeholder="email@exemplo.com" required>
                     </div>
                     <div class="form-group">
-                        <label class="mb-0 display-4 text-center text-light">Senha</label>
+                        <label class="mb-0 text-center text-light">Senha</label>
                         <input type="password" class="form-control-plaintext text-center text-light border-bottom border-light" name="password" placeholder="Senha" required>
                     </div>
 
+                    <div class="form-group">
                     <button type="submit" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
-                   <a  class="btn btn-link text-center container text-light display-4" href="">Conhecer <i class="fas fa-chevron-circle-right"></i></a>
+                    <a class="btn btn-outline-light container text-center text-light mt-3" style="border-radius: 20px;" href="/apresentacao">
+                    <span class="">Conhecer </span> <i class="fas fa-chevron-circle-right text-light"></i></a>
+                    </div>
                 </form>
             </div>
         </div>

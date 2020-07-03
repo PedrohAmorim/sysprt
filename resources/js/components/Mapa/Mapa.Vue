@@ -1,66 +1,60 @@
 <template>
-  <div>
-    <div class="container-fluid p-0">
-      <gmap-map :center="center" :zoom="zoom" :style="{width: '100%',  height: '90vh'}">
-        <gmap-polyline
-        v-if="ver.linha"
-        :path="markersLine"
-        :options="{ strokeColor: 'blue' }"
-        />
-        <gmap-marker
-          :key="index"
-          v-if="ver.marker"
-          v-for="(m, index) in markers"
-          :position="{lat : m.latitude, lng:m.longitude}"
-          :icon="icone(m.tipo)"
-          :clickable="true"
-          @click="abrirJanela(m)"
-          :title="m.nome"
-        />
-
-        <gmap-info-window
-          :options="infoWindow.options"
-          :opened="infoWindow.open"
-          :position="infoWindow.position"
-          @closeclick="infoWindow.open = false"
-          :data="infoWindow.data"
-        >
-          <info v-if="infoWindow.open" :data="infoWindow.data" />
-        </gmap-info-window>
-      </gmap-map>
-
-      <div v-if="modo != 'normal'" class="fixed-bottom fundo">
-        <img
-          v-if="carregando"
-          src="img/carregando.gif"
-          style="height: 150px margin: 0 auto !important;"
-        />
-
-        <div v-if="!carregando">
-
-          <div class="row m-1">
-            <div class="col text-center" @click="reproduzir(-1)">
-              <i class="fas fa-chevron-left text-light display-4"></i>
-            </div>
-
-            <div class="col text-center">
-              <i class="far fa-play-circle text-light display-4"></i>
-            </div>
-
-            <div class="col text-center" @click="reproduzir(1)">
-              <i class="fas fa-chevron-right text-light display-4"></i>
-            </div>
-          </div>
-          <div class="row text-light text-center h3 m-3">
-            <div class="col text-center" style="font-size: 15px;">
-              <input type="checkbox" class="form-check-input" v-model="ver.marker" />
-              <span>Ver pontos</span>
-            </div>
-          </div>
-        </div>
+  <div class="position-relative">
+      <div v-if="carregando" class="container-fluid text-center display-1 corprt position-absolute"  style="z-index: 2;" >
+        <i class="fas fa-asterisk fa-pulse icon"></i>
       </div>
-    </div>
+    <section id="replay-map"  class="fixed-bottom " style="z-index: 3;">
+      <div  id="replay-controls" class="row">
+            <button
+              type="button"
+              class="bg-light text-primary rounded border-light col h2"
+              :class="{'disabled' : isFirst}"
+              @click.prevent="reproduzir(-1)"
+              v-if="modo == 'replay'"
+            ><i class="fas fa-angle-double-left"></i></button>
+            <button
+              type="button"
+              class="bg-light text-primary rounded col h2 border-light "
+              :class="{'disabled' : isLast}"
+              @click.prevent="reproduzir(1)"
+              v-if="modo == 'replay'"
+            ><i class="fas fa-angle-double-right"></i></button>
+            <button  class="bg-light col rounded text-primary h2 border-light " @click="telacheia()">
+              <i class="fa fa-expand "></i>
+            </button>
+      </div>
+    </section>
+
+    <gmap-map
+      :center="center"
+      :zoom="zoom"
+      :options="options"
+      :style="{width: '100%',  height: '90vh'}"
+    >
+      <gmap-polyline v-if="ver.linha" :path="markersLine" :options="{ strokeColor: 'blue' }" />
+      <gmap-marker
+        :key="index"
+        v-if="ver.marker"
+        v-for="(m, index) in markers"
+        :position="{lat : m.latitude, lng:m.longitude}"
+        :icon="icone(m.tipo)"
+        :clickable="true"
+        @click="abrirJanela(m)"
+        :title="m.nome"
+      />
+
+      <gmap-info-window
+        :options="infoWindow.options"
+        :opened="infoWindow.open"
+        :position="infoWindow.position"
+        @closeclick="infoWindow.open = false"
+        :data="infoWindow.data"
+      >
+        <info v-if="infoWindow.open" :data="infoWindow.data" />
+      </gmap-info-window>
+    </gmap-map>
   </div>
+  <!--  <span :class="{ 'show': loading.itinerarios }" data-label="Carregando itinerarios"></span> -->
 </template>
 
 <script>
@@ -79,6 +73,8 @@ export default {
   data() {
     return {
       selectPosicao: "",
+      isFirst: false,
+      isLast: false,
       infoWindow: {
         data: null,
         open: false,
@@ -101,43 +97,48 @@ export default {
       markersLine: [],
       modo: "normal",
       atualizar: true,
-      carregando: false
+      carregando: false,
+      options: {
+        fullscreenControl: false,
+        streetViewControl: false,
+        zoomControl: false,
+        mapTypeControl: false
+      }
     };
   },
-  watch: {
-  },
+  watch: {},
   mounted() {
-    this.geolocate();
+    this.aovivo();
 
     this.$eventBus.$on(["replay"], data => {
       this.carregando = true;
-      this.atualizar = false;
+       this.atualizar = false;
+
       this.posicaoperiodo(data);
       this.modo = "replay";
     });
   },
   methods: {
     reproduzir($valor) {
-      this.modo = "passando";
-
-      this.markers = [];
-      this.markersReserva[this.ponto].tipo == "replay";
-      this.markers.push(this.markersReserva[this.ponto]);
-      this.center = {
+      this.markers = []
+      this.markersReserva[this.ponto].tipo == "replay"
+      this.markers.push(this.markersReserva[this.ponto])
+    /*  this.center = {
         lat: this.markersReserva[this.ponto].latitude,
         lng: this.markersReserva[this.ponto].longitude
-      };
-      this.horaatual = this.markersReserva[this.ponto].dataehora;
-      this.zoom = 15;
+      };*/
+      this.zoom = 16;
 
       this.abrirJanela(this.markersReserva[this.ponto]);
 
       if (this.ponto == 0 && $valor < 0) {
         alert("Você está na primeira posição");
+        this.isFirst = true
       } else if (
         this.ponto == this.markersReserva.lenght - 1 &&
         this.valor > 0
       ) {
+           this.isLast = true
         alert("Você está na ultima posição");
       } else {
         this.ponto = this.ponto + $valor;
@@ -159,7 +160,7 @@ export default {
     posicaoperiodo(dados) {
       this.atualizar = false;
       this.carregando = true;
-      this.markers.pop();
+      this.markers = []
       axios
         .post("/posicaoperiodo", dados)
         .then(response => {
@@ -168,42 +169,19 @@ export default {
               lat: parseFloat(item.latitude),
               lng: parseFloat(item.longitude)
             });
-            item.latitude = parseFloat(item.latitude)
-            item.longitude = parseFloat(item.longitude)
-            item.tipo = "replay"
-            this.markers.push(item)
+            item.latitude = parseFloat(item.latitude);
+            item.longitude = parseFloat(item.longitude);
+            item.tipo = "replay";
+            this.markers.push(item);
           });
-          this.markersReserva = this.markers
-          this.ver.linha = true
+          this.markersReserva = this.markers;
+          this.ver.linha = true;
           this.center = {
             lat: this.markers[this.markers.length - 1].latitude,
             lng: this.markers[this.markers.length - 1].longitude
-          }
-          this.zoom = 15
-          this.carregando = false
-        })
-        .catch(error => {
-          console.error("error: ", error);
-        });
-    },
-    mostrar(dados) {
-      axios
-        .post("/ultimaposicao")
-        .then(response => {
-          [...response.data].forEach(item => {
-            if (this.infoWindow.data != null) {
-              //Atualizar o Info Window se ele estiver aberto
-              if (
-                item.descricao == this.infoWindow.data.nome &&
-                this.infoWindow.open
-              ) {
-                this.abrirJanela(item);
-              }
-            }
-            item.latitude = parseFloat(item.latitude);
-            item.longitude = parseFloat(item.longitude);
-            this.markers.push(item);
-          });
+          };
+          this.zoom = 15;
+          this.carregando = false;
         })
         .catch(error => {
           console.error("error: ", error);
@@ -232,10 +210,10 @@ export default {
     },
     tempo() {
       setTimeout(() => {
-        if (this.atualizar) this.geolocate();
+        if (this.atualizar) this.aovivo();
       }, 20000);
     },
-    geolocate() {
+    aovivo() {
       axios
         .get("/ultimaposicao")
         .then(response => {
@@ -259,7 +237,10 @@ export default {
         .catch(error => {
           console.error("error: ", error);
         });
-      this.tempo();
+      this.tempo()
+    },
+    telacheia (){
+        window.requestFullScreen()
     }
   }
 };

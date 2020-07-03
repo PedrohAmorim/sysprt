@@ -22,7 +22,7 @@
 
     <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
       <ul class="navbar-nav">
-        <li class="nav-item dropdown" style="width: 50vw !important; margin: 0 auto;">
+        <li class="nav-item dropdown" style=" margin: 0 auto;">
           <a
             class="nav-link dropdown-toggle btn btn-light text-dark"
             href="#"
@@ -57,14 +57,14 @@
                   <span>Ao Vivo</span>
                 </a>
                 <a class="dropdown-item btn btn-light" href="#" @click.prevent="replay()">
-                  <i class="fas fa-clipboard-list"></i>
+                  <i class="fas fa-retweet"></i>
                   <span>Replay</span>
                 </a>
-                <a class="dropdown-item btn btn-light" href="/Motoristas">
-                  <i class="fas fa-location-arrow"></i>
-                  <span>Motoristas</span>
+                <a class="dropdown-item btn btn-light" href="/veiculos">
+                  <i class="fas fa-car-side"></i>
+                  <span>Meus Veículos</span>
                 </a>
-                <a class="dropdown-item btn btn-light" href="#">
+                <a class="dropdown-item btn btn-light" href="/">
                   <i class="fas fa-sign-out-alt"></i>
                   <span>Sair</span>
                 </a>
@@ -150,7 +150,7 @@ export default {
           this.veiculos = response.data;
         })
         .catch(error => {
-          console.error("error: ", error);
+          console.error("error: ", error)
         });
     },
     enviardados() {
@@ -168,7 +168,6 @@ export default {
     },
     replay() {
       this.opcao = "replay";
-      window.requestFullScreen();
     }
   }
 };
