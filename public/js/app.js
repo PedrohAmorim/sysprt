@@ -2547,12 +2547,12 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     bloquear: function bloquear() {
       axios.get('/veiculo/bloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {
-        alert('O bloqueio ficará ativo em até 1minuto');
+        window.location.href = '/home?bloqueio=true';
       });
     },
     desbloquear: function desbloquear() {
       axios.get('/veiculo/desbloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {
-        alert('O desbloqueio será efetivado em até 1minuto');
+        window.location.href = '/home?bloqueio=false';
       });
     },
     pegarVeiculos: function pegarVeiculos() {
