@@ -2402,6 +2402,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 var eventBus = new Vue();
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2432,7 +2440,7 @@ var eventBus = new Vue();
     enviardados: function enviardados() {
       if (this.dados.data != null && this.dados.horainicio != null && this.dados.horafim != null && this.dados.veiculo > 0) {
         this.$eventBus.$emit("replay", this.dados);
-        $("#btnMenu").trigger('click');
+        $("#btnMenu").trigger("click");
       } else {
         alert("Preencha todos os dados!!!");
       }
@@ -2454,6 +2462,8 @@ var eventBus = new Vue();
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -2535,6 +2545,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    bloquear: function bloquear() {
+      axios.get('/veiculo/bloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {
+        alert('O bloqueio ficará ativo em até 1minuto');
+      });
+    },
+    desbloquear: function desbloquear() {
+      axios.get('/veiculo/desbloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {
+        alert('O desbloqueio será efetivado em até 1minuto');
+      });
+    },
     pegarVeiculos: function pegarVeiculos() {
       var _this = this;
 
@@ -39432,7 +39452,8 @@ var render = function() {
                         _c(
                           "a",
                           {
-                            staticClass: "dropdown-item btn btn-light",
+                            staticClass:
+                              "dropdown-item btn btn-light h4 text-center",
                             attrs: { href: "#" },
                             on: {
                               click: function($event) {
@@ -39450,7 +39471,11 @@ var render = function() {
                         _vm._v(" "),
                         _vm._m(3),
                         _vm._v(" "),
-                        _vm._m(4)
+                        _vm._m(4),
+                        _vm._v(" "),
+                        _vm._m(5),
+                        _vm._v(" "),
+                        _vm._m(6)
                       ])
                     ])
                   ]
@@ -39661,7 +39686,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "a",
-      { staticClass: "dropdown-item btn btn-light", attrs: { href: "/home" } },
+      {
+        staticClass: "dropdown-item btn btn-light h4 text-center",
+        attrs: { href: "/home" }
+      },
       [
         _c("i", { staticClass: "fas fa-eye" }),
         _vm._v(" "),
@@ -39676,7 +39704,7 @@ var staticRenderFns = [
     return _c(
       "a",
       {
-        staticClass: "dropdown-item btn btn-light",
+        staticClass: "dropdown-item btn btn-light h4 text-center",
         attrs: { href: "/veiculo" }
       },
       [
@@ -39692,7 +39720,44 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "a",
-      { staticClass: "dropdown-item btn btn-light", attrs: { href: "/" } },
+      {
+        staticClass: "dropdown-item btn btn-light h4 text-center",
+        attrs: { href: "/pontos" }
+      },
+      [
+        _c("i", { staticClass: "fas fa-map-marked-alt" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Pontos")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "dropdown-item btn btn-light h4 text-center",
+        attrs: { href: "/pontos" }
+      },
+      [
+        _c("i", { staticClass: "far fa-paper-plane" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Viagens")])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "dropdown-item btn btn-light h4 text-center",
+        attrs: { href: "/" }
+      },
       [
         _c("i", { staticClass: "fas fa-sign-out-alt" }),
         _vm._v(" "),
@@ -39936,7 +40001,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-primary",
+                staticClass: "btn btn-outline-primary btn-block",
                 attrs: { type: "submit" },
                 on: {
                   click: function($event) {
@@ -39946,6 +40011,36 @@ var render = function() {
                 }
               },
               [_vm._v("Salvar")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-danger btn-block",
+                attrs: { type: "submit" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.bloquear()
+                  }
+                }
+              },
+              [_vm._v("Bloqueio")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-success btn-block",
+                attrs: { type: "submit" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.desbloquear()
+                  }
+                }
+              },
+              [_vm._v("Desbloqueio")]
             )
           ])
         : _vm._e()
@@ -55065,8 +55160,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\pedro\Desktop\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\pedro\Documents\sysprt\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\pedro\Documents\sysprt\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

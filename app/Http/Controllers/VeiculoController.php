@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Veiculo;
 use PhpParser\Node\Stmt\Return_;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Mensagens;
 
 class VeiculoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index()
     {
@@ -24,6 +30,32 @@ class VeiculoController extends Controller
         $veiculo->placa = $request->placa;
 
         $veiculo->save();
+
+    }
+
+    public function bloqueio($id){
+      
+        $mensagem = new Mensagens();
+
+        $mensagem->idModulo = $id;
+        $mensagem->mensagem = 'ST300CMD;' . $id . ';02;Enable1';
+        $mensagem->idUser  = Auth::user()->id;
+        $mensagem->enviado = 0;
+
+        $mensagem->save();
+
+    }
+
+    public function desbloqueio($id){
+      
+        $mensagem = new Mensagens();
+
+        $mensagem->idModulo = $id;
+        $mensagem->mensagem = 'ST300CMD;' . $id . ';02;Disable1';
+        $mensagem->idUser  = Auth::user()->id;
+        $mensagem->enviado = 0;
+
+        $mensagem->save();
 
     }
 }

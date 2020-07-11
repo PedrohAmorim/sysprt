@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class ReplayController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index(){
         return view('replay.replay');

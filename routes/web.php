@@ -27,3 +27,5 @@ Route::get('/pegarveiculos','ReplayController@pegarVeiculos');
 Route::get('/apresentacao','ApresentacaoController@index');
 Route::get('/veiculo','VeiculoController@index');
 Route::post('/veiculo/salvar','VeiculoController@salvar');
+Route::get('/veiculo/bloqueio/{id}','VeiculoController@bloqueio');
+Route::get('/veiculo/desbloqueio/{id}','VeiculoController@desbloqueio');

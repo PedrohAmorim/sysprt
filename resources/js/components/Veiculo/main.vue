@@ -48,7 +48,9 @@
             placeholder="XXX-0000"
           />
         </div>
-        <button type="submit" class="btn btn-primary" @click.prevent="salvar()">Salvar</button>
+        <button type="submit" class="btn btn-outline-primary btn-block" @click.prevent="salvar()">Salvar</button>
+         <button type="submit" class="btn btn-outline-danger btn-block" @click.prevent="bloquear()">Bloqueio</button>
+          <button type="submit" class="btn btn-outline-success btn-block" @click.prevent="desbloquear()">Desbloqueio</button>
       </form>
     </div>
   </div>
@@ -80,6 +82,17 @@ export default {
       }
   },
   methods: {
+    bloquear(){
+    axios.get('/veiculo/bloqueio/' + this.selectVeiculo.data.idModulo)
+    .then(retorno =>{
+      alert('O bloqueio ficará ativo em até 1minuto')
+    })
+    }, desbloquear(){
+    axios.get('/veiculo/desbloqueio/' + this.selectVeiculo.data.idModulo)
+    .then(retorno =>{
+      alert('O desbloqueio será efetivado em até 1minuto')
+    })
+    },
     pegarVeiculos() {
       axios
         .get("/pegarveiculos")

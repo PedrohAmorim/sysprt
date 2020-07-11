@@ -52,19 +52,27 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <div class="row">
               <div class="container">
-                <a class="dropdown-item btn btn-light" href="/home">
+                <a class="dropdown-item btn btn-light h4 text-center" href="/home">
                   <i class="fas fa-eye"></i>
                   <span>Ao Vivo</span>
                 </a>
-                <a class="dropdown-item btn btn-light" href="#" @click.prevent="replay()">
+                <a class="dropdown-item btn btn-light h4 text-center" href="#" @click.prevent="replay()">
                   <i class="fas fa-retweet"></i>
                   <span>Replay</span>
                 </a>
-                <a class="dropdown-item btn btn-light" href="/veiculo">
+                <a class="dropdown-item btn btn-light h4 text-center" href="/veiculo">
                   <i class="fas fa-car-side"></i>
                   <span>Meus Veículos</span>
                 </a>
-                <a class="dropdown-item btn btn-light" href="/">
+                <a class="dropdown-item btn btn-light h4 text-center" href="/pontos">
+                  <i class="fas fa-map-marked-alt"></i>
+                  <span>Pontos</span>
+                </a>
+                <a class="dropdown-item btn btn-light h4 text-center" href="/pontos">
+                  <i class="far fa-paper-plane"></i>
+                  <span>Viagens</span>
+                </a>
+                <a class="dropdown-item btn btn-light h4 text-center" href="/">
                   <i class="fas fa-sign-out-alt"></i>
                   <span>Sair</span>
                 </a>
@@ -85,7 +93,7 @@
             </select>
           </div>
         </li>
-        <li v-if="opcao == 'replay'" class="nav-item m-1" >
+        <li v-if="opcao == 'replay'" class="nav-item m-1">
           <input
             class="form-control text-center"
             type="date"
@@ -150,7 +158,7 @@ export default {
           this.veiculos = response.data;
         })
         .catch(error => {
-          console.error("error: ", error)
+          console.error("error: ", error);
         });
     },
     enviardados() {
@@ -161,7 +169,7 @@ export default {
         this.dados.veiculo > 0
       ) {
         this.$eventBus.$emit("replay", this.dados);
-         $("#btnMenu").trigger('click')
+        $("#btnMenu").trigger("click");
       } else {
         alert("Preencha todos os dados!!!");
       }
