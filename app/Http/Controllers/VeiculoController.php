@@ -33,12 +33,12 @@ class VeiculoController extends Controller
 
     }
 
-    public function bloqueio($id){
+    public function bloqueio($idModulo){
       
         $mensagem = new Mensagens();
 
-        $mensagem->idModulo = $id;
-        $mensagem->mensagem = 'ST300CMD;' . $id . ';02;Enable1';
+        $mensagem->idModulo = $idModulo;
+        $mensagem->mensagem = 'ST300CMD;' . $idModulo . ';02;Enable1';
         $mensagem->idUser  = Auth::user()->id;
         $mensagem->enviado = 0;
 
@@ -46,12 +46,12 @@ class VeiculoController extends Controller
 
     }
 
-    public function desbloqueio($id){
+    public function desbloqueio($idModulo){
       
         $mensagem = new Mensagens();
 
-        $mensagem->idModulo = $id;
-        $mensagem->mensagem = 'ST300CMD;' . $id . ';02;Disable1';
+        $mensagem->idModulo = $idModulo;
+        $mensagem->mensagem = 'ST300CMD;' . $idModulo . ';02;Disable1';
         $mensagem->idUser  = Auth::user()->id;
         $mensagem->enviado = 0;
 
