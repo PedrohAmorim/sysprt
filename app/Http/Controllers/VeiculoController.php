@@ -31,6 +31,7 @@ class VeiculoController extends Controller
 
         $veiculo->save();
 
+        return redirect()->away('/home?bloqueio=true');
     }
 
     public function bloqueio($idModulo){
@@ -43,6 +44,8 @@ class VeiculoController extends Controller
         $mensagem->enviado = 0;
 
         $mensagem->save();
+
+      return redirect()->away('/home?bloqueio=false');
 
     }
 

@@ -21,37 +21,44 @@
         }
 
         input:hover {
-            background: linear-gradient(50deg, #0d4a8e , #0e2e1a ) no-repeat;
+            background: linear-gradient(50deg, #0d4a8e, #0e2e1a) no-repeat;
             border-left: 5px;
             border-right: 5px;
             border-style: solid;
             border-color: white;
         }
+        .corprt {
+            color: #0d4a8e;
+        }
     </style>
 </head>
 
 <body class="fundo">
+
+
     <div class="container-fluid">
+        <div class="fixed-top text-center display-1 corprt" style="display: none;" id="carregando"> <i class="fas fa-cog fa-pulse icon"></i></div>
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6 offset-3" style="margin: 0 auto;">
-                <form method="POST" action="{{ route('login') }}" style="margin-top: 25vh;">
+                <form method="POST" action="{{ route('login') }}" style="margin-top: 25vh;" id="entrada">
                     @csrf
                     <div class="text-center p-1">
                         <img src="{{url('img/logo.png')}}" class="bg-light rounded" style="max-width: 100px;" />
                     </div>
                     <div class="form-group ">
                         <label class="mb-0 text-center text-light">E-mail</label>
-                        <input type="email" class="form-control-plaintext text-center text-light border-bottom border-light" name="email" placeholder="email@exemplo.com" required>
+                        <input type="email" class="form-control-plaintext text-center text-light border-bottom border-light" name="email" id="email" placeholder="email@exemplo.com" required>
                     </div>
                     <div class="form-group">
                         <label class="mb-0 text-center text-light">Senha</label>
-                        <input type="password" class="form-control-plaintext text-center text-light border-bottom border-light" name="password" placeholder="Senha" required>
+                        <input type="password" class="form-control-plaintext text-center text-light border-bottom border-light" name="password" id="senha" placeholder="Senha" required>
                     </div>
 
                     <div class="form-group">
-                    <button type="submit" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
-                    <a class="btn btn-outline-light container text-center text-light mt-3" style="border-radius: 20px;" href="/apresentacao">
-                    <span class="">Conhecer </span> <i class="fas fa-chevron-circle-right text-light"></i></a>
+                        <button type="submit" id="entrar" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
+                        <a class="btn btn-outline-light container text-center text-light mt-3" style="border-radius: 20px;" href="/apresentacao">
+                            <span class="">Conhecer </span> <i class="fas fa-chevron-circle-right text-light"></i></a>
+                            
                     </div>
                 </form>
             </div>
@@ -64,5 +71,25 @@
 
     <script src="https://kit.fontawesome.com/15d9aa85c2.js" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+    $(() => {
+
+        if (localStorage.length > 0 && navigator.userAgent.toLowerCase().includes('build/')) {
+            $('#carregando').css('display','block')
+            $('#email').val(window.localStorage.getItem('email'))
+            $('#senha').val(window.localStorage.getItem('senha'))
+
+            $('#entrar').trigger('click')
+        }
+
+
+
+        $('#entrada').on('submit', () => {
+            window.localStorage.setItem('email', $('#email').val())
+            window.localStorage.setItem('senha', $('#senha').val())
+        })
+    })
+</script>
 
 </html>

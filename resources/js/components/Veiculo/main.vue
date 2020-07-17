@@ -85,12 +85,11 @@ export default {
     bloquear(){
     axios.get('/veiculo/bloqueio/' + this.selectVeiculo.data.idModulo)
     .then(retorno =>{
-         window.location.href = '/home?bloqueio=true'
     })
     }, desbloquear(){
     axios.get('/veiculo/desbloqueio/' + this.selectVeiculo.data.idModulo)
     .then(retorno =>{
-     window.location.href = '/home?bloqueio=false'
+    // window.location.href = '/home?bloqueio=false'
     })
     },
     pegarVeiculos() {

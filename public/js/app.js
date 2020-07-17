@@ -2546,13 +2546,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     bloquear: function bloquear() {
-      axios.get('/veiculo/bloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {
-        window.location.href = '/home?bloqueio=true';
-      });
+      axios.get('/veiculo/bloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {});
     },
     desbloquear: function desbloquear() {
-      axios.get('/veiculo/desbloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {
-        window.location.href = '/home?bloqueio=false';
+      axios.get('/veiculo/desbloqueio/' + this.selectVeiculo.data.idModulo).then(function (retorno) {// window.location.href = '/home?bloqueio=false'
       });
     },
     pegarVeiculos: function pegarVeiculos() {
