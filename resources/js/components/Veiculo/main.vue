@@ -2,16 +2,13 @@
 <template>
   <div class="container p-2">
     <select v-model="select" class="form-control">
+      <option selected value="null">Selecione o veículo </option>
       <option v-for="(veiculo,key) in veiculos" :value="key">{{veiculo.descricao}}</option>
     </select>
-    <section id="replay-map"  class="fixed-bottom " style="z-index: 3;">
-          <button v-if="!navegador_app()" class="bg-light col rounded text-primary h2 border-light " @click="telacheia()">
-             <i class="fas fa-expand"></i>
-            </button>
-    </section>
+
     <div class="container">
       <br />
-      <form action="/veiculo/salvar" method="post" v-if="selectVeiculo.id != null">
+      <form action="/veiculo/salvar" method="post" v-if="selectVeiculo.id != 'null'">
         <div class="form-row">
           <div class="form-group col-sm-6 col-lg-6">
             <label for="inputEmail4">Numero</label>
@@ -63,7 +60,7 @@ export default {
       veiculos: [],
       select: null,
       selectVeiculo: {
-        id: null,
+        id: 'null',
         data: {
           numero: null,
           descricao: null,

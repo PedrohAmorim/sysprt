@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>sys_prt</title>
+    <title>Sys_prt</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -37,9 +37,9 @@
 
 
     <div class="container-fluid">
-        <div class="fixed-top text-center display-1 corprt" style="display: none;" id="carregando"> <i class="fas fa-cog fa-pulse icon"></i></div>
+        <div class="fixed-top text-center display-1 " style="display: none; color: white;" id="carregando"> <h1 >Entrando...</h1> <i class="fas fa-cog fa-pulse icon"></i></div>
         <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-6 offset-3" style="margin: 0 auto;">
+            <div class="col-sm-6 col-md-6 col-lg-6 offset-3" id="formulario" style="margin: 0 auto;">
                 <form method="POST" action="{{ route('login') }}" style="margin-top: 25vh;" id="entrada">
                     @csrf
                     <div class="text-center p-1">
@@ -56,8 +56,8 @@
 
                     <div class="form-group">
                         <button type="submit" id="entrar" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
-                        <a class="btn btn-outline-light container text-center text-light mt-3" style="border-radius: 20px;" href="/apresentacao">
-                            <span class="">Conhecer </span> <i class="fas fa-chevron-circle-right text-light"></i></a>
+                       <!-- <a class="btn btn-outline-light container text-center text-light mt-3" style="border-radius: 20px;" href="/apresentacao">
+                            <span class="">Conhecer </span> <i class="fas fa-chevron-circle-right text-light"></i></a> -->
                             
                     </div>
                 </form>
@@ -73,18 +73,15 @@
 </body>
 
 <script type="text/javascript">
-    $(() => {
-
-        if (localStorage.length > 0 && navigator.userAgent.toLowerCase().includes('build/')) {
-            $('#carregando').css('display','block')
+      if (localStorage.length > 0 ) {
             $('#email').val(window.localStorage.getItem('email'))
             $('#senha').val(window.localStorage.getItem('senha'))
 
+            $('#formulario').css('display','none')
+            $('#carregando').css('display','block')
             $('#entrar').trigger('click')
         }
-
-
-
+    $(() => {
         $('#entrada').on('submit', () => {
             window.localStorage.setItem('email', $('#email').val())
             window.localStorage.setItem('senha', $('#senha').val())

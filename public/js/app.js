@@ -1981,9 +1981,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__, {
@@ -2171,12 +2168,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTE
         console.error("error: ", error);
       });
       this.tempo();
-    },
-    telacheia: function telacheia() {
-      window.requestFullScreen();
-    },
-    navegador_app: function navegador_app() {
-      return window.navegador_app();
     }
   }
 });
@@ -2394,22 +2385,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var eventBus = new Vue();
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2428,6 +2403,15 @@ var eventBus = new Vue();
     this.carregarVeiculos();
   },
   methods: {
+    navegador_app: function navegador_app() {
+      return window.navegador_app();
+    },
+    telacheia: function telacheia() {
+      $("#btnMenu").trigger("click");
+      setTimeout(function () {
+        window.requestFullScreen();
+      }, 100);
+    },
     carregarVeiculos: function carregarVeiculos() {
       var _this = this;
 
@@ -2445,8 +2429,20 @@ var eventBus = new Vue();
         alert("Preencha todos os dados!!!");
       }
     },
-    replay: function replay() {
-      this.opcao = "replay";
+    replay: function replay(modo) {
+      var _this2 = this;
+
+      if (modo == "normal") {
+        setTimeout(function () {
+          _this2.opcao = "normal";
+        }, 200);
+      } else {
+        this.opcao = this.opcao == "replay" ? "normal" : "replay";
+      }
+    },
+    apagarUser: function apagarUser() {
+      window.localStorage.removeItem('email');
+      window.localStorage.removeItem('senha');
     }
   }
 });
@@ -2517,16 +2513,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       veiculos: [],
       select: null,
       selectVeiculo: {
-        id: null,
+        id: 'null',
         data: {
           numero: null,
           descricao: null,
@@ -39136,22 +39129,6 @@ var render = function() {
                   },
                   [_c("i", { staticClass: "fas fa-angle-double-right" })]
                 )
-              : _vm._e(),
-            _vm._v(" "),
-            !_vm.navegador_app()
-              ? _c(
-                  "button",
-                  {
-                    staticClass:
-                      "bg-light col rounded text-primary h2 border-light ",
-                    on: {
-                      click: function($event) {
-                        return _vm.telacheia()
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "fas fa-expand" })]
-                )
               : _vm._e()
           ])
         ]
@@ -39362,123 +39339,116 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    {
-      staticClass:
-        "navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark",
-      attrs: { id: "menuPrincipal" }
-    },
+    { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
     [
       _vm._m(0),
       _vm._v(" "),
-      _vm._m(1),
+      _c(
+        "button",
+        {
+          staticClass: "navbar-toggler",
+          attrs: {
+            type: "button",
+            "data-toggle": "collapse",
+            "data-target": "#navbarNav",
+            "aria-controls": "navbarNav",
+            "aria-expanded": "false",
+            "aria-label": "Toggle navigation",
+            id: "btnMenu"
+          },
+          on: {
+            click: function($event) {
+              return _vm.replay("normal")
+            }
+          }
+        },
+        [_c("span", { staticClass: "navbar-toggler-icon" })]
+      ),
       _vm._v(" "),
       _c(
         "div",
-        {
-          staticClass: "collapse navbar-collapse",
-          attrs: { id: "conteudoNavbarSuportado" }
-        },
+        { staticClass: "collapse navbar-collapse", attrs: { id: "navbarNav" } },
         [
           _c("ul", { staticClass: "navbar-nav" }, [
-            _c(
-              "li",
-              {
-                staticClass: "nav-item dropdown",
-                staticStyle: { margin: "0 auto" }
-              },
-              [
-                _vm.opcao != "replay"
-                  ? _c(
-                      "a",
-                      {
-                        staticClass:
-                          "nav-link dropdown-toggle btn btn-light text-dark",
-                        attrs: {
-                          href: "#",
-                          id: "navbarDropdown",
-                          role: "button",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
+            _vm.opcao != "replay"
+              ? _c("li", { staticClass: "nav-item" }, [_vm._m(1)])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.opcao != "replay"
+              ? _c("li", { staticClass: "nav-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "dropdown-item btn btn-light h4 text-center",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.replay()
                         }
-                      },
-                      [
-                        _c("i", { staticClass: "fas fa-eye" }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "rotulo" }, [
-                          _vm._v("Ao Vivo")
-                        ])
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.opcao == "replay"
-                  ? _c(
-                      "a",
-                      {
-                        staticClass:
-                          "nav-link dropdown-toggle btn btn-light text-dark",
-                        attrs: {
-                          href: "#",
-                          id: "navbarDropdown",
-                          role: "button",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        }
-                      },
-                      [
-                        _c("i", { staticClass: "fas fa-clipboard-list" }),
-                        _vm._v(" "),
-                        _c("span", [_vm._v("Replay")])
-                      ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "dropdown-menu",
-                    attrs: { "aria-labelledby": "navbarDropdown" }
-                  },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "container" }, [
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass:
-                              "dropdown-item btn btn-light h4 text-center",
-                            attrs: { href: "#" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.replay()
-                              }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-clipboard-list" }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Replay")])
+                    ]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.opcao != "replay"
+              ? _c("li", { staticClass: "nav-item" }, [_vm._m(2)])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.opcao != "replay"
+              ? _c("li", { staticClass: "nav-item" }, [_vm._m(3)])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.opcao != "replay"
+              ? _c("li", { staticClass: "nav-item" }, [
+                  !_vm.navegador_app()
+                    ? _c(
+                        "button",
+                        {
+                          staticClass:
+                            "dropdown-item btn btn-light h4 text-center",
+                          on: {
+                            click: function($event) {
+                              return _vm.telacheia()
                             }
-                          },
-                          [
-                            _c("i", { staticClass: "fas fa-retweet" }),
-                            _vm._v(" "),
-                            _c("span", [_vm._v("Replay")])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _vm._m(4),
-                        _vm._v(" "),
-                        _vm._m(5),
-                        _vm._v(" "),
-                        _vm._m(6)
-                      ])
-                    ])
-                  ]
-                )
-              ]
-            ),
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "fas fa-expand-arrows-alt" }),
+                          _c("span", [_vm._v(" Tela Cheia")])
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.opcao != "replay"
+              ? _c("li", { staticClass: "nav-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "dropdown-item btn btn-light h4 text-center",
+                      attrs: { href: "/" },
+                      on: {
+                        click: function($event) {
+                          return _vm.apagarUser()
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-sign-out-alt" }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Sair")])
+                    ]
+                  )
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _vm.opcao == "replay"
               ? _c("li", { staticClass: "nav-item m-1" }, [
@@ -39636,6 +39606,28 @@ var render = function() {
                     ]
                   )
                 ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.opcao == "replay"
+              ? _c("li", { staticClass: "nav-item text-center m-1" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-light text-dark text-center",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.replay("")
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-arrow-left" }),
+                      _vm._v(" Voltar\n        ")
+                    ]
+                  )
+                ])
               : _vm._e()
           ])
         ]
@@ -39661,27 +39653,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "button",
-      {
-        staticClass: "navbar-toggler",
-        attrs: {
-          type: "button",
-          "data-toggle": "collapse",
-          "data-target": "#conteudoNavbarSuportado",
-          "aria-controls": "conteudoNavbarSuportado",
-          "aria-expanded": "false",
-          "aria-label": "Alterna navegação",
-          id: "btnMenu"
-        }
-      },
-      [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
       "a",
       {
         staticClass: "dropdown-item btn btn-light h4 text-center",
@@ -39690,7 +39661,7 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "fas fa-eye" }),
         _vm._v(" "),
-        _c("span", [_vm._v("Ao Vivo")])
+        _c("span", [_vm._v("Ao vivo")])
       ]
     )
   },
@@ -39722,43 +39693,9 @@ var staticRenderFns = [
         attrs: { href: "/pontos" }
       },
       [
-        _c("i", { staticClass: "fas fa-map-marked-alt" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Pontos")])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "dropdown-item btn btn-light h4 text-center",
-        attrs: { href: "/pontos" }
-      },
-      [
         _c("i", { staticClass: "far fa-paper-plane" }),
         _vm._v(" "),
         _c("span", [_vm._v("Viagens")])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "dropdown-item btn btn-light h4 text-center",
-        attrs: { href: "/" }
-      },
-      [
-        _c("i", { staticClass: "fas fa-sign-out-alt" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Sair")])
       ]
     )
   }
@@ -39813,44 +39750,24 @@ var render = function() {
           }
         }
       },
-      _vm._l(_vm.veiculos, function(veiculo, key) {
-        return _c("option", { domProps: { value: key } }, [
-          _vm._v(_vm._s(veiculo.descricao))
-        ])
-      }),
-      0
-    ),
-    _vm._v(" "),
-    _c(
-      "section",
-      {
-        staticClass: "fixed-bottom ",
-        staticStyle: { "z-index": "3" },
-        attrs: { id: "replay-map" }
-      },
       [
-        !_vm.navegador_app()
-          ? _c(
-              "button",
-              {
-                staticClass:
-                  "bg-light col rounded text-primary h2 border-light ",
-                on: {
-                  click: function($event) {
-                    return _vm.telacheia()
-                  }
-                }
-              },
-              [_c("i", { staticClass: "fas fa-expand" })]
-            )
-          : _vm._e()
-      ]
+        _c("option", { attrs: { selected: "", value: "null" } }, [
+          _vm._v("Selecione o veículo ")
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.veiculos, function(veiculo, key) {
+          return _c("option", { domProps: { value: key } }, [
+            _vm._v(_vm._s(veiculo.descricao))
+          ])
+        })
+      ],
+      2
     ),
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("br"),
       _vm._v(" "),
-      _vm.selectVeiculo.id != null
+      _vm.selectVeiculo.id != "null"
         ? _c("form", { attrs: { action: "/veiculo/salvar", method: "post" } }, [
             _c("div", { staticClass: "form-row" }, [
               _c("div", { staticClass: "form-group col-sm-6 col-lg-6" }, [

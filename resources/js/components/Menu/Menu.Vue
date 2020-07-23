@@ -1,9 +1,6 @@
 
 <template>
-  <nav
-    class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark"
-    id="menuPrincipal"
-  >
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/home">
       <img class="navbar-brand bg-light" src="img/logo.png" style="max-width: 60px;" />
     </a>
@@ -11,75 +8,53 @@
       class="navbar-toggler"
       type="button"
       data-toggle="collapse"
-      data-target="#conteudoNavbarSuportado"
-      aria-controls="conteudoNavbarSuportado"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
       aria-expanded="false"
-      aria-label="Alterna navegação"
-      id="btnMenu"
+      aria-label="Toggle navigation"
+      @click="replay('normal')"
+      id='btnMenu'
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+    <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item dropdown" style=" margin: 0 auto;">
-          <a
-            class="nav-link dropdown-toggle btn btn-light text-dark"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            v-if="opcao != 'replay'"
-          >
+        <li class="nav-item" v-if="opcao != 'replay'">
+          <a class="dropdown-item btn btn-light h4 text-center" href="/home">
             <i class="fas fa-eye"></i>
-            <span class="rotulo">Ao Vivo</span>
+            <span>Ao vivo</span>
           </a>
-          <a
-            class="nav-link dropdown-toggle btn btn-light text-dark"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            v-if="opcao == 'replay'"
-          >
+        </li>
+        <li class="nav-item" v-if="opcao != 'replay'">
+          <a class="dropdown-item btn btn-light h4 text-center" href="#" @click.prevent="replay()">
             <i class="fas fa-clipboard-list"></i>
             <span>Replay</span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <div class="row">
-              <div class="container">
-                <a class="dropdown-item btn btn-light h4 text-center" href="/home">
-                  <i class="fas fa-eye"></i>
-                  <span>Ao Vivo</span>
-                </a>
-                <a class="dropdown-item btn btn-light h4 text-center" href="#" @click.prevent="replay()">
-                  <i class="fas fa-retweet"></i>
-                  <span>Replay</span>
-                </a>
-                <a class="dropdown-item btn btn-light h4 text-center" href="/veiculo">
-                  <i class="fas fa-car-side"></i>
-                  <span>Meus Veículos</span>
-                </a>
-                <a class="dropdown-item btn btn-light h4 text-center" href="/pontos">
-                  <i class="fas fa-map-marked-alt"></i>
-                  <span>Pontos</span>
-                </a>
-                <a class="dropdown-item btn btn-light h4 text-center" href="/pontos">
-                  <i class="far fa-paper-plane"></i>
-                  <span>Viagens</span>
-                </a>
-                <a class="dropdown-item btn btn-light h4 text-center" href="/">
-                  <i class="fas fa-sign-out-alt"></i>
-                  <span>Sair</span>
-                </a>
-              </div>
-            </div>
-          </div>
         </li>
+        <li class="nav-item" v-if="opcao != 'replay'">
+          <a class="dropdown-item btn btn-light h4 text-center" href="/veiculo">
+            <i class="fas fa-car-side"></i>
+            <span>Meus Veículos</span>
+          </a>
+        </li>
+        <li class="nav-item" v-if="opcao != 'replay'">
+          <a class="dropdown-item btn btn-light h4 text-center" href="/pontos">
+            <i class="far fa-paper-plane"></i>
+            <span>Viagens</span>
+          </a>
+        </li>
+        <li class="nav-item" v-if="opcao != 'replay'">
+         <button v-if="!navegador_app()" class="dropdown-item btn btn-light h4 text-center" @click="telacheia()">
+            <i class="fas fa-expand-arrows-alt"></i><span> Tela Cheia</span>
+            </button>
+        </li>
+        <li class="nav-item" v-if="opcao != 'replay'">
+          <a class="dropdown-item btn btn-light h4 text-center" href="/" @click="apagarUser()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+          </a>
+        </li>
+
         <li v-if="opcao == 'replay'" class="nav-item m-1">
           <div class="form-group">
             <select
@@ -126,6 +101,15 @@
             <i class="fas fa-search"></i> Pesquisar
           </button>
         </li>
+        <li v-if="opcao == 'replay'" class="nav-item text-center m-1">
+          <button
+            class="btn btn-light text-dark text-center"
+            @click.prevent="replay('')"
+            type="submit"
+          >
+            <i class="fas fa-arrow-left"></i> Voltar
+          </button>
+        </li>
       </ul>
     </div>
   </nav>
@@ -143,21 +127,30 @@ export default {
         data: null,
         veiculo: "null",
         horainicio: null,
-        horafim: null
-      }
+        horafim: null,
+      },
     };
   },
   mounted() {
-    this.carregarVeiculos();
+    this.carregarVeiculos()
   },
   methods: {
+    navegador_app(){
+        return window.navegador_app()
+    },
+    telacheia (){       
+       $("#btnMenu").trigger("click")
+       setTimeout(() => {
+        window.requestFullScreen()
+        },100)         
+    },
     carregarVeiculos() {
       axios
         .get("/pegarveiculos")
-        .then(response => {
+        .then((response) => {
           this.veiculos = response.data;
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("error: ", error);
         });
     },
@@ -174,9 +167,19 @@ export default {
         alert("Preencha todos os dados!!!");
       }
     },
-    replay() {
-      this.opcao = "replay";
+    replay(modo) {
+      if (modo == "normal") {
+         setTimeout(() => {
+          (this.opcao = "normal")
+         },200)
+      } else {
+        this.opcao = this.opcao == "replay" ? "normal" : "replay";
+      }
+    },
+    apagarUser(){
+           window.localStorage.removeItem('email')
+            window.localStorage.removeItem('senha')
     }
-  }
+  },
 };
 </script>

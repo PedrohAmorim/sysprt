@@ -19,10 +19,7 @@
               :class="{'disabled' : isLast}"
               @click.prevent="reproduzir(1)"
               v-if="modo == 'replay'"
-            ><i class="fas fa-angle-double-right"></i></button>
-            <button v-if="!navegador_app()" class="bg-light col rounded text-primary h2 border-light " @click="telacheia()">
-             <i class="fas fa-expand"></i>
-            </button>
+            ><i class="fas fa-angle-double-right"></i></button>           
       </div>
     </section>
 
@@ -239,12 +236,8 @@ export default {
           console.error("error: ", error);
         });
       this.tempo()
-    },
-    telacheia (){
-        window.requestFullScreen()
-    },navegador_app(){
-        return window.navegador_app()
     }
+    
   }
 };
 </script>
