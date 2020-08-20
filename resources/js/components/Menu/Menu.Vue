@@ -38,7 +38,7 @@
           </a>
         </li>
         <li class="nav-item" v-if="opcao != 'replay'">
-          <a class="dropdown-item btn btn-light h4 text-center" href="/pontos">
+          <a class="dropdown-item btn btn-light h4 text-center" href="/viagens">
             <i class="far fa-paper-plane"></i>
             <span>Viagens</span>
           </a>

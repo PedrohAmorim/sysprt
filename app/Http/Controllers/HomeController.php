@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+session_start();
 use Illuminate\Http\Request;
-
+use App\Models\Versao;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $_SESSION['versao'] = Versao::all()->first()->valor;
         return view('home');
     }
+
+    
 }

@@ -56,8 +56,8 @@
 
                     <div class="form-group">
                         <button type="submit" id="entrar" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
-                       <!-- <a class="btn btn-outline-light container text-center text-light mt-3" style="border-radius: 20px;" href="/apresentacao">
-                            <span class="">Conhecer </span> <i class="fas fa-chevron-circle-right text-light"></i></a> -->
+                        <a class="btn container text-center text-light mb-5 fixed-bottom" style="border-radius: 20px;" href="/politicadeprivacidade">
+                           Politica de privacidade </a> 
                             
                     </div>
                 </form>

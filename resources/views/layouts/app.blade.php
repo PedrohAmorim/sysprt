@@ -1,7 +1,7 @@
 ﻿<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<?php define('Version', '2'); ?>
 <head>
+    <?php  if(!isset($_SESSION['versao'])) { session_start();}  ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,14 +12,14 @@
     <link rel="icon" href="/img/favicon.png" type="image/png" />
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?v=<?=Version?>" defer></script>
+    <script src="{{ asset('js/app.js') }}?v=<?=isset($_SESSION['versao']) ? $_SESSION['versao'] : '0' ?>" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}?v=<?=Version?>" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v=<?=$_SESSION['versao']?>" rel="stylesheet">
 
     <style type="text/css" rel="stylesheet">
         .info {
