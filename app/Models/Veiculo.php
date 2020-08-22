@@ -21,5 +21,6 @@ class Veiculo extends Model
         'descricao',
         'tipo',
         'placa'
+        ,'idUsuario'
     ];
 }

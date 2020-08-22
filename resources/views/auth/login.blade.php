@@ -57,8 +57,7 @@
                     <div class="form-group">
                         <button type="submit" id="entrar" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
                         <a class="btn container text-center text-light mb-5 fixed-bottom" style="border-radius: 20px;" href="/politicadeprivacidade">
-                           Politica de privacidade </a> 
-                            
+                           Politica de privacidade </a>                             
                     </div>
                 </form>
             </div>

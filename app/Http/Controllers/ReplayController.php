@@ -26,7 +26,7 @@ class ReplayController extends Controller
         if(Auth::user()->admin){
             return Veiculo::all();
         }else{
-            return Veiculo::where('idUsuario',Auth::user()->id);
+            return Veiculo::where('idUsuario',Auth::user()->id)->get();
         }
     }
 
