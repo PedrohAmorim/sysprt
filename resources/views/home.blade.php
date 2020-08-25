@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-   
+
+<script>   window.localStorage.setItem('login', 'ok')  </script>
 
  <?php  
  if(isset($_GET['bloqueio'])){
@@ -15,9 +16,6 @@
    ?>
 <mapa></mapa>
 
-<script>
 
-window.localStorage.setItem('login', 'ok')
-</script>
 
 @endsection

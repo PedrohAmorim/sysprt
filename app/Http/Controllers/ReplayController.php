@@ -34,26 +34,17 @@ class ReplayController extends Controller
 
         $fuso = FusoHorario::all()->first();
 
-        $request->horainicio =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $request->data . ' ' . $request->horainicio.':00' );
-        $request->horainicio = $request->horainicio->timezone('UTC')->addHour($fuso->valor * -1)->format('d-m-Y H:i:s');
+       $horaInicio =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $request->data . ' ' . $request->horainicio.':00' )->addHour($fuso->valor * -1)->format('d-m-Y H:i:s');
+        $horaFim =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $request->data . ' ' . $request->horafim.':00')->addHour($fuso->valor * -1)->format('d-m-Y H:i:s');
 
-        $request->horafim =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $request->data . ' ' . $request->horafim.':00');
-        $request->horafim = $request->horafim->timezone('UTC')->addHour($fuso->valor * -1)->format('d-m-Y H:i:s');
 
         $posicoes =  Posicao::on('conEmpresa')
-        ->select('posicao.id', 'dataehora', 'latitude', 'longitude', 'posicao.idModulo', 'v.descricao', 'posicao.ignicao', DB::raw('convert(int,posicao.velocidade) as velocidade'),'v.tipo')
+        ->select('posicao.id', DB::raw("format(dateadd(hour,-3,dataehora),'dd/MM/yyyy HH:mm:ss') as dataehora"), 'latitude', 'longitude', 'posicao.idModulo', 'v.descricao', 'posicao.ignicao', DB::raw('convert(int,posicao.velocidade) as velocidade'),'v.tipo')
         ->join('Veiculo as v', 'v.id', '=', 'Posicao.idVeiculo')
         ->where('idVeiculo','=',$request->veiculo)
-        ->whereBetween('dataehora', array($request->horainicio, $request->horafim))
+        ->whereBetween('dataehora', array($horaInicio, $horaFim))
         ->orderby('dataehora')
         ->get();
-
-        foreach($posicoes as $item){
-            $item->dataehora =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $item->dataehora);
-            $item->dataehora = $item->dataehora->timezone('UTC')->addHour($fuso->valor)->format('d-m-Y H:i:s');
-            //$item->dataehora = date("d-m-Y H:i:s", strtotime($item->dataehora));
-        }
-
 
         return $posicoes;
 
