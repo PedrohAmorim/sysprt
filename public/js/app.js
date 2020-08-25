@@ -2443,6 +2443,7 @@ var eventBus = new Vue();
     apagarUser: function apagarUser() {
       window.localStorage.removeItem('email');
       window.localStorage.removeItem('senha');
+      window.localStorage.removeItem('login');
     }
   }
 });

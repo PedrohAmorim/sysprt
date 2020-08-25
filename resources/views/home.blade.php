@@ -15,4 +15,9 @@
    ?>
 <mapa></mapa>
 
+<script>
+
+window.localStorage.setItem('login', 'ok')
+</script>
+
 @endsection

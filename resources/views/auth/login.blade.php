@@ -35,7 +35,6 @@
 
 <body class="fundo">
 
-
     <div class="container-fluid">
         <div class="fixed-top text-center display-1 " style="display: none; color: white;" id="carregando"> <h1 >Entrando...</h1> <i class="fas fa-cog fa-pulse icon"></i></div>
         <div class="row">
@@ -73,12 +72,18 @@
 
 <script type="text/javascript">
       if (localStorage.length > 0 ) {
+          if(window.localStorage.getItem('login') == 'ok'){
             $('#email').val(window.localStorage.getItem('email'))
             $('#senha').val(window.localStorage.getItem('senha'))
 
             $('#formulario').css('display','none')
             $('#carregando').css('display','block')
             $('#entrar').trigger('click')
+          }else{
+              if(window.localStorage.getItem('email') != null){
+                  $('#formulario').append('<h4 class="text-danger text-center">Usuário ou senha incorretos!</h4>')
+              }
+          }
         }
     $(() => {
         $('#entrada').on('submit', () => {
