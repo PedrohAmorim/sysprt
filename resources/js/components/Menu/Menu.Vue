@@ -3,6 +3,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/home">
       <img class="navbar-brand bg-light" src="img/logo.png" style="max-width: 60px;" />
+      <button class="btn btn-outline-dark">{{Km.toFixed(2)}}Km's </button>
     </a>
     <button
       class="navbar-toggler"
@@ -121,6 +122,7 @@ export const eventBus = new Vue();
 export default {
   data() {
     return {
+      Km: 0,
       opcao: null,
       veiculos: [],
       dados: {
@@ -133,8 +135,16 @@ export default {
   },
   mounted() {
     this.carregarVeiculos()
+    this.pegarKm()
   },
   methods: {
+    pegarKm(){
+    axios.get('/km').then(response =>{
+      this.Km = parseFloat(response.data[0].Km)
+      }).catch(error =>{
+        console.log(error)
+      })
+    },
     navegador_app(){
         return window.navegador_app()
     },

@@ -2385,10 +2385,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var eventBus = new Vue();
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      Km: 0,
       opcao: null,
       veiculos: [],
       dados: {
@@ -2401,8 +2403,18 @@ var eventBus = new Vue();
   },
   mounted: function mounted() {
     this.carregarVeiculos();
+    this.pegarKm();
   },
   methods: {
+    pegarKm: function pegarKm() {
+      var _this = this;
+
+      axios.get('/km').then(function (response) {
+        _this.Km = parseFloat(response.data[0].Km);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     navegador_app: function navegador_app() {
       return window.navegador_app();
     },
@@ -2413,10 +2425,10 @@ var eventBus = new Vue();
       }, 100);
     },
     carregarVeiculos: function carregarVeiculos() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/pegarveiculos").then(function (response) {
-        _this.veiculos = response.data;
+        _this2.veiculos = response.data;
       })["catch"](function (error) {
         console.error("error: ", error);
       });
@@ -2430,11 +2442,11 @@ var eventBus = new Vue();
       }
     },
     replay: function replay(modo) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (modo == "normal") {
         setTimeout(function () {
-          _this2.opcao = "normal";
+          _this3.opcao = "normal";
         }, 200);
       } else {
         this.opcao = this.opcao == "replay" ? "normal" : "replay";
@@ -39467,7 +39479,17 @@ var render = function() {
     "nav",
     { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
     [
-      _vm._m(0),
+      _c("a", { staticClass: "navbar-brand", attrs: { href: "/home" } }, [
+        _c("img", {
+          staticClass: "navbar-brand bg-light",
+          staticStyle: { "max-width": "60px" },
+          attrs: { src: "img/logo.png" }
+        }),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-outline-dark" }, [
+          _vm._v(_vm._s(_vm.Km.toFixed(2)) + "Km's ")
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "button",
@@ -39497,7 +39519,7 @@ var render = function() {
         [
           _c("ul", { staticClass: "navbar-nav" }, [
             _vm.opcao != "replay"
-              ? _c("li", { staticClass: "nav-item" }, [_vm._m(1)])
+              ? _c("li", { staticClass: "nav-item" }, [_vm._m(0)])
               : _vm._e(),
             _vm._v(" "),
             _vm.opcao != "replay"
@@ -39524,11 +39546,11 @@ var render = function() {
               : _vm._e(),
             _vm._v(" "),
             _vm.opcao != "replay"
-              ? _c("li", { staticClass: "nav-item" }, [_vm._m(2)])
+              ? _c("li", { staticClass: "nav-item" }, [_vm._m(1)])
               : _vm._e(),
             _vm._v(" "),
             _vm.opcao != "replay"
-              ? _c("li", { staticClass: "nav-item" }, [_vm._m(3)])
+              ? _c("li", { staticClass: "nav-item" }, [_vm._m(2)])
               : _vm._e(),
             _vm._v(" "),
             _vm.opcao != "replay"
@@ -39762,18 +39784,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "navbar-brand", attrs: { href: "/home" } }, [
-      _c("img", {
-        staticClass: "navbar-brand bg-light",
-        staticStyle: { "max-width": "60px" },
-        attrs: { src: "img/logo.png" }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

@@ -7,6 +7,8 @@ use App\Models\Veiculo;
 use PhpParser\Node\Stmt\Return_;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mensagens;
+use Facade\Ignition\QueryRecorder\Query;
+use Illuminate\Support\Facades\DB;
 
 class VeiculoController extends Controller
 {
@@ -60,5 +62,17 @@ class VeiculoController extends Controller
 
         $mensagem->save();
 
+    }
+
+    public function pegarKm(){
+
+        $idUser = Auth::user()->id;
+        $data = date('d-m-Y');
+
+        $query =  "select sum(km)/1000 Km from viagem vi
+        join veiculo ve on ve.id = vi.idVeiculo
+        where ve.idUsuario = {$idUser} and vi.HoraInicio > '$data'";
+         
+       return DB::connection('conEmpresa')->select(DB::raw($query));
     }
 }

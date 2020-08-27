@@ -31,3 +31,4 @@ Route::get('/veiculo/bloqueio/{idModulo}','VeiculoController@bloqueio');
 Route::get('/veiculo/desbloqueio/{idModulo}','VeiculoController@desbloqueio');
 Route::get('/viagens', 'ViagemController@index');
 Route::get('/viagens/{dia}', 'ViagemController@pegarViagens');
+Route::get('/km', 'VeiculoController@pegarKm');
