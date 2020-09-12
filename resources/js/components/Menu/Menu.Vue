@@ -1,7 +1,7 @@
 
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/home">
+    <a class="navbar-brand" href="/quilometragem">
       <img class="navbar-brand bg-light" src="img/logo.png" style="max-width: 60px;" />
       <button class="btn btn-outline-dark">{{Km.toFixed(2)}}Km's </button>
     </a>
@@ -138,6 +138,7 @@ export default {
     this.pegarKm()
   },
   methods: {
+
     pegarKm(){
     axios.get('/km').then(response =>{
       this.Km = parseFloat(response.data[0].Km)
@@ -148,11 +149,11 @@ export default {
     navegador_app(){
         return window.navegador_app()
     },
-    telacheia (){       
+    telacheia (){
        $("#btnMenu").trigger("click")
        setTimeout(() => {
         window.requestFullScreen()
-        },100)         
+        },100)
     },
     carregarVeiculos() {
       axios
@@ -190,7 +191,7 @@ export default {
            window.localStorage.removeItem('email')
             window.localStorage.removeItem('senha')
             window.localStorage.removeItem('login')
-         
+
     }
   },
 };

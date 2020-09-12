@@ -28,5 +28,10 @@ class HomeController extends Controller
         return view('home');
     }
 
-    
+    public function resetSenha(){
+        return Versao::all()->first()->resetSenha;
+    }
+
+
+
 }

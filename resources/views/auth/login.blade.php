@@ -56,7 +56,7 @@
                     <div class="form-group">
                         <button type="submit" id="entrar" class="btn btn-primary container" style="border-radius: 20px;" id="entrar">Entrar</button>
                         <a class="btn container text-center text-light mb-5 fixed-bottom" style="border-radius: 20px;" href="/politicadeprivacidade">
-                           Politica de privacidade </a>                             
+                           Politica de privacidade </a>
                     </div>
                 </form>
             </div>
@@ -68,29 +68,38 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <script src="https://kit.fontawesome.com/15d9aa85c2.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
 
 <script type="text/javascript">
-      if (localStorage.length > 0 ) {
-          if(window.localStorage.getItem('login') == 'ok'){
-            $('#email').val(window.localStorage.getItem('email'))
-            $('#senha').val(window.localStorage.getItem('senha'))
 
-            $('#formulario').css('display','none')
-            $('#carregando').css('display','block')
-            $('#entrar').trigger('click')
-          }else{
-              if(window.localStorage.getItem('email') != null){
-                  $('#formulario').append('<h4 class="text-danger text-center">Usuário ou senha incorretos!</h4>')
-              }
-          }
-        }
+                      if (window.localStorage.getItem('login') == 'ok') {
+                          $('#email').val(window.localStorage.getItem('email'))
+                          $('#senha').val(window.localStorage.getItem('senha'))
+
+                          $('#formulario').css('display', 'none')
+                          $('#carregando').css('display', 'block')
+                          $('#entrar').trigger('click')
+                      } else {
+                          if (window.localStorage.getItem('email') != null) {
+                              $('#formulario').append('<h4 class="text-danger text-center">Usuário ou senha incorretos!</h4>')
+                          }
+
+                      }
+                  }
+
+
+
+
+
+
     $(() => {
         $('#entrada').on('submit', () => {
             window.localStorage.setItem('email', $('#email').val())
             window.localStorage.setItem('senha', $('#senha').val())
         })
     })
+
 </script>
 
 </html>

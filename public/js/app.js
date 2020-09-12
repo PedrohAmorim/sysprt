@@ -2240,16 +2240,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     carregarendereco: function carregarendereco() {
-      var _this = this;
-
       $.ajax({
         type: 'GET',
         url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.data.position.lat + ',' + this.data.position.lng + '&key=AIzaSyBjRsY1NNPFms-CxPIyO6wZSrg-Hj_GpEw',
         success: function success(resultado) {
-          _this.endereco = //rua
-          resultado.results[0].address_components[1].long_name //numero
-          + ',' + resultado.results[0].address_components[0].long_name //bairro
-          + ' - ' + resultado.results[0].address_components[2].long_name;
+          window.localStorage.removeItem('email');
+          window.localStorage.removeItem('senha');
+          window.localStorage.removeItem('login');
         }
       });
     }
@@ -2588,6 +2585,52 @@ __webpack_require__.r(__webpack_exports__);
     },
     telacheia: function telacheia() {
       window.requestFullScreen();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Viagem/km.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Viagem/km.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      dias: []
+    };
+  },
+  mounted: function mounted() {
+    this.carregarQuilometros();
+  },
+  methods: {
+    carregarQuilometros: function carregarQuilometros() {
+      var _this = this;
+
+      axios.get('/kmDiario').then(function (response) {
+        _this.dias = response.data;
+      });
     }
   }
 });
@@ -39479,17 +39522,21 @@ var render = function() {
     "nav",
     { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
     [
-      _c("a", { staticClass: "navbar-brand", attrs: { href: "/home" } }, [
-        _c("img", {
-          staticClass: "navbar-brand bg-light",
-          staticStyle: { "max-width": "60px" },
-          attrs: { src: "img/logo.png" }
-        }),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-outline-dark" }, [
-          _vm._v(_vm._s(_vm.Km.toFixed(2)) + "Km's ")
-        ])
-      ]),
+      _c(
+        "a",
+        { staticClass: "navbar-brand", attrs: { href: "/quilometragem" } },
+        [
+          _c("img", {
+            staticClass: "navbar-brand bg-light",
+            staticStyle: { "max-width": "60px" },
+            attrs: { src: "img/logo.png" }
+          }),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-outline-dark" }, [
+            _vm._v(_vm._s(_vm.Km.toFixed(2)) + "Km's ")
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "button",
@@ -40096,6 +40143,51 @@ var render = function() {
         : _vm._e()
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Viagem/km.vue?vue&type=template&id=27140fd5&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Viagem/km.vue?vue&type=template&id=27140fd5& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container" },
+    _vm._l(_vm.dias, function(dia) {
+      return _c("div", { staticClass: "row rounded border" }, [
+        _c("div", { staticClass: "col col-sm-4 col-md-4 btn btn-light" }, [
+          _vm._v("\n          " + _vm._s(dia.Dia) + "\n      ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col col-sm-4 col-md-4 btn btn-light" }, [
+          _vm._v("\n         " + _vm._s(dia.descricao) + "\n      ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col col-sm-4 col-md-4 btn btn-light" }, [
+          _vm._v(
+            "\n         " + _vm._s(parseFloat(dia.Km).toFixed(2)) + "\n      "
+          )
+        ])
+      ])
+    }),
+    0
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -55027,6 +55119,7 @@ Vue.component('mapa', __webpack_require__(/*! ./components/Mapa/Mapa.vue */ "./r
 Vue.component('info', __webpack_require__(/*! ./components/Mapa/info.vue */ "./resources/js/components/Mapa/info.vue")["default"]);
 Vue.component('veiculos', __webpack_require__(/*! ./components/Veiculo/main.vue */ "./resources/js/components/Veiculo/main.vue")["default"]);
 Vue.component('viagem', __webpack_require__(/*! ./components/Viagem/main.vue */ "./resources/js/components/Viagem/main.vue")["default"]);
+Vue.component('km', __webpack_require__(/*! ./components/Viagem/km.vue */ "./resources/js/components/Viagem/km.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -55359,6 +55452,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_template_id_30cfc724___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Viagem/km.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Viagem/km.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _km_vue_vue_type_template_id_27140fd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./km.vue?vue&type=template&id=27140fd5& */ "./resources/js/components/Viagem/km.vue?vue&type=template&id=27140fd5&");
+/* harmony import */ var _km_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./km.vue?vue&type=script&lang=js& */ "./resources/js/components/Viagem/km.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _km_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _km_vue_vue_type_template_id_27140fd5___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _km_vue_vue_type_template_id_27140fd5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Viagem/km.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Viagem/km.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Viagem/km.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_km_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./km.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Viagem/km.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_km_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Viagem/km.vue?vue&type=template&id=27140fd5&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Viagem/km.vue?vue&type=template&id=27140fd5& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_km_vue_vue_type_template_id_27140fd5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./km.vue?vue&type=template&id=27140fd5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Viagem/km.vue?vue&type=template&id=27140fd5&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_km_vue_vue_type_template_id_27140fd5___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_km_vue_vue_type_template_id_27140fd5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

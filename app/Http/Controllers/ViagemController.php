@@ -19,9 +19,13 @@ class ViagemController extends Controller
     {
       return view('viagem.index');
     }
+public function viewKm(){
+        return view('viagem.km');
+
+}
 
     public function pegarViagens($dia){
-     
+
       $fuso = FusoHorario::all()->first();
 
       $horainicio =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dia . ' ' . '00:00:00' );
@@ -32,13 +36,13 @@ class ViagemController extends Controller
 
       $filtroUsuario = Auth::user()->admin == true ? ' ' : "and ve.idUsuario = " . Auth::user()->id . "";
 
-      $query = 
-      "select 
+      $query =
+      "select
       vi.id,
       vi.posicaoInicio,
       vi.posicaoFim,
-      vi.horaInicio,
-      vi.horaFim,
+      format(dateadd(hour,{$fuso->valor},vi.horaInicio),'dd/MM/yyyy HH:mm:ss') horaInicio ,
+      format(dateadd(hour,{$fuso->valor},vi.horaFim),'dd/MM/yyyy HH:mm:ss') horaFim,
       vi.km,
       m.nomeescala,
       ve.descricao,
@@ -56,20 +60,34 @@ class ViagemController extends Controller
      ." join posicao pi on pi.id = vi.posicaoInicio "
      ." join posicao pf on pf.id = vi.posicaoFim "
      ." where vi.horaInicio between '". $horainicio . "' and '" . $horafim ."'"
-     . $filtroUsuario 
-     . "and (vi.km/1000) > 3 order by vi.horaInicio desc";
+     . $filtroUsuario
+     . " order by vi.horaInicio desc";
 
-      $viagens = DB::connection('conEmpresa')->select(DB::raw($query));
+      return DB::connection('conEmpresa')->select(DB::raw($query));
 
-      foreach($viagens as $item){
-        //Colocar o Fuso na hora Inicial
-        $item->horaInicio =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $item->horaInicio);
-        $item->horaInicio = $item->horaInicio->timezone('UTC')->addHour($fuso->valor)->format('d-m-Y H:i:s');
-        //Colocar o Fuso na hora Final
-        $item->horaFim =  \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $item->horaFim);
-        $item->horaFim = $item->horaFim->timezone('UTC')->addHour($fuso->valor)->format('d-m-Y H:i:s');
-      }
 
-      return $viagens;
     }
+
+    public function kmDiario(){
+
+        if(Auth::user() ->admin == true) {
+            $query = "select format(convert(date,dateadd(hour,-3,horaInicio)),'dd/MM/yyyy') Dia,ve.descricao,SUM(km)/1000 Km
+from viagem vi
+join Veiculo ve on ve.id = vi.idVeiculo
+group by convert(date,dateadd(hour,-3,horaInicio)),ve.descricao
+order by  convert(date,dateadd(hour,-3,horaInicio)) desc";
+        }else{
+            $query = "select format(convert(date,dateadd(hour,-3,horaInicio)),'dd/MM/yyyy') Dia,ve.descricao,SUM(km)/1000 Km
+from viagem vi
+join Veiculo ve on ve.id = vi.idVeiculo
+where ve.idUser = {Auth::user()->id}
+group by convert(date,dateadd(hour,-3,horaInicio)),ve.descricao
+order by  convert(date,dateadd(hour,-3,horaInicio)) desc";
+        }
+
+
+       return DB::connection('conEmpresa')->select($query);
+
+    }
+
 }

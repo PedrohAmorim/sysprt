@@ -14,6 +14,7 @@ class Versao extends Model
 
     public $fillable =
     [
-        'valor'
+        'valor',
+        'resetSenha'
     ];
 }

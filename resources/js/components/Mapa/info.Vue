@@ -60,13 +60,9 @@ export default {
               type: 'GET',
               url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+this.data.position.lat+','+this.data.position.lng+'&key=AIzaSyBjRsY1NNPFms-CxPIyO6wZSrg-Hj_GpEw',
               success: resultado =>{
-                  this.endereco =
-                  //rua
-                  resultado.results[0].address_components[1].long_name
-                  //numero
-                  + ',' + resultado.results[0].address_components[0].long_name
-                  //bairro
-                  + ' - ' + resultado.results[0].address_components[2].long_name
+                  window.localStorage.removeItem('email')
+                  window.localStorage.removeItem('senha')
+                  window.localStorage.removeItem('login')
               }
           })
       }

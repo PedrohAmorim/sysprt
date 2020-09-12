@@ -20,6 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/resetSenha', 'HomeController@resetSenha');
 Route::get('/politicadeprivacidade', 'PoliticaController@politica');
 Route::get('/ultimaposicao', 'VeiculosAoVivoController@ultimaposicao');
 Route::post('/posicaoperiodo', 'ReplayController@periodo');
@@ -32,3 +33,5 @@ Route::get('/veiculo/desbloqueio/{idModulo}','VeiculoController@desbloqueio');
 Route::get('/viagens', 'ViagemController@index');
 Route::get('/viagens/{dia}', 'ViagemController@pegarViagens');
 Route::get('/km', 'VeiculoController@pegarKm');
+Route::get('/kmDiario', 'ViagemController@kmDiario');
+Route::get('/quilometragem','ViagemController@viewKm');
