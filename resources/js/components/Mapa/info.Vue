@@ -60,9 +60,8 @@ export default {
               type: 'GET',
               url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+this.data.position.lat+','+this.data.position.lng+'&key=AIzaSyBjRsY1NNPFms-CxPIyO6wZSrg-Hj_GpEw',
               success: resultado =>{
-                  window.localStorage.removeItem('email')
-                  window.localStorage.removeItem('senha')
-                  window.localStorage.removeItem('login')
+                  console.log(resultado)
+               this.endereco = resultado.results[0].formatted_address;
               }
           })
       }

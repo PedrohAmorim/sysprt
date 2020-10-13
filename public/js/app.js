@@ -2240,13 +2240,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     carregarendereco: function carregarendereco() {
+      var _this = this;
+
       $.ajax({
         type: 'GET',
         url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.data.position.lat + ',' + this.data.position.lng + '&key=AIzaSyBjRsY1NNPFms-CxPIyO6wZSrg-Hj_GpEw',
         success: function success(resultado) {
-          window.localStorage.removeItem('email');
-          window.localStorage.removeItem('senha');
-          window.localStorage.removeItem('login');
+          console.log(resultado);
+          _this.endereco = resultado.results[0].formatted_address;
         }
       });
     }
