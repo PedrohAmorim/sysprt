@@ -80,7 +80,7 @@ order by  convert(date,dateadd(hour,-3,horaInicio)) desc";
             $query = "select format(convert(date,dateadd(hour,-3,horaInicio)),'dd/MM/yyyy') Dia,ve.descricao,SUM(km)/1000 Km
 from viagem vi
 join Veiculo ve on ve.id = vi.idVeiculo
-where ve.idUser = {Auth::user()->id}
+where ve.idUsuario = ". Auth::user()->id . "
 group by convert(date,dateadd(hour,-3,horaInicio)),ve.descricao
 order by  convert(date,dateadd(hour,-3,horaInicio)) desc";
         }

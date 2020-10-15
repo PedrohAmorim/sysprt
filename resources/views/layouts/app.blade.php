@@ -19,23 +19,9 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}?v=<?=$_SESSION['versao']?>" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v=<?=isset($_SESSION['versao']) ? $_SESSION['versao'] : '0'?>" rel="stylesheet">
 
     <style type="text/css" rel="stylesheet">
-        .info {
-            opacity: 1;
-            transition: all 2s ease-in;
-        }
-
-        .fundo {
-            background: linear-gradient(50deg, #0d4a8e, #0e2e1a) no-repeat;
-            overflow: unset;
-        }
-
-        .corprt {
-            color: #0d4a8e;
-        }
-
         i:hover {
             color: yellow;
             transition: all 0.5s ease;
@@ -49,10 +35,7 @@
 
 <body>
     <div id="app">
-        <div id="navegador" class="row">
-        </div>
         <menu-principal></menu-principal>
-
         <main>
             @yield('content')
         </main>
