@@ -16,5 +16,9 @@
 
 @endsection
 
+@section('script')
+
 
 <script>   window.localStorage.setItem('login', 'ok')  </script>
+@endsection
+
