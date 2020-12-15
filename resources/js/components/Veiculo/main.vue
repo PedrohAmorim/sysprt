@@ -1,9 +1,9 @@
 
 <template>
   <div class="container p-2">
-    <select v-model="select" class="form-control">
+    <select v-model="selectVeiculo.id" class="form-control">
       <option selected value="null">Selecione o veículo </option>
-      <option v-for="(veiculo,key) in veiculos" :value="key">{{veiculo.descricao}}</option>
+      <option v-for="(veiculo,key) in veiculos" :value="veiculo.id">{{veiculo.descricao}}</option>
     </select>
 
     <div class="container">
@@ -94,13 +94,23 @@ export default {
         .get("/pegarveiculos")
         .then(resultado => {
           this.veiculos = resultado.data;
+            if(resultado.data.length == 1) {
+                this.selectVeiculo.id =
+                    {
+                        id: resultado.data[0].id,
+                        data: resultado.data[0]
+                    }
+            }
+            this.select = resultado.data[0].id
         })
         .catch(error => {});
     },
     veicSelect(id) {
       setTimeout(() => {
 
-         this.selectVeiculo.data = this.veiculos[id]
+         this.selectVeiculo.data = this.veiculos.filter(item => {
+             return item.id = id
+         })[0]
          this.selectVeiculo.id = id
       }, 200);
     },

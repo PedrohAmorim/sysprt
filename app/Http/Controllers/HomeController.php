@@ -24,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        session_destroy();
         $_SESSION['versao'] = Versao::all()->first()->valor;
         return view('home');
     }

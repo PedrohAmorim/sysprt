@@ -2561,13 +2561,24 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/pegarveiculos").then(function (resultado) {
         _this.veiculos = resultado.data;
+
+        if (resultado.data.length == 1) {
+          _this.selectVeiculo.id = {
+            id: resultado.data[0].id,
+            data: resultado.data[0]
+          };
+        }
+
+        _this.select = resultado.data[0].id;
       })["catch"](function (error) {});
     },
     veicSelect: function veicSelect(id) {
       var _this2 = this;
 
       setTimeout(function () {
-        _this2.selectVeiculo.data = _this2.veiculos[id];
+        _this2.selectVeiculo.data = _this2.veiculos.filter(function (item) {
+          return item.id = id;
+        })[0];
         _this2.selectVeiculo.id = id;
       }, 200);
     },
@@ -39913,8 +39924,8 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.select,
-            expression: "select"
+            value: _vm.selectVeiculo.id,
+            expression: "selectVeiculo.id"
           }
         ],
         staticClass: "form-control",
@@ -39928,9 +39939,11 @@ var render = function() {
                 var val = "_value" in o ? o._value : o.value
                 return val
               })
-            _vm.select = $event.target.multiple
-              ? $$selectedVal
-              : $$selectedVal[0]
+            _vm.$set(
+              _vm.selectVeiculo,
+              "id",
+              $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+            )
           }
         }
       },
@@ -39940,7 +39953,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _vm._l(_vm.veiculos, function(veiculo, key) {
-          return _c("option", { domProps: { value: key } }, [
+          return _c("option", { domProps: { value: veiculo.id } }, [
             _vm._v(_vm._s(veiculo.descricao))
           ])
         })
