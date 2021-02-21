@@ -2232,7 +2232,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ["data"],
   data: function data() {
     return {
-      endereco: null
+      endereco: nullnpm
     };
   },
   mounted: function mounted() {
@@ -2528,7 +2528,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       veiculos: [],
-      select: null,
       selectVeiculo: {
         id: 'null',
         data: {
@@ -2542,11 +2541,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.pegarVeiculos();
-  },
-  watch: {
-    select: function select() {
-      this.veicSelect(this.select);
-    }
   },
   methods: {
     bloquear: function bloquear() {
@@ -2568,19 +2562,10 @@ __webpack_require__.r(__webpack_exports__);
             data: resultado.data[0]
           };
         }
-
-        _this.select = resultado.data[0].id;
       })["catch"](function (error) {});
     },
-    veicSelect: function veicSelect(id) {
-      var _this2 = this;
-
-      setTimeout(function () {
-        _this2.selectVeiculo.data = _this2.veiculos.filter(function (item) {
-          return item.id = id;
-        })[0];
-        _this2.selectVeiculo.id = id;
-      }, 200);
+    veicSelect: function veicSelect() {
+      this.selectVeiculo.data = this.veiculos[this.selectVeiculo.id];
     },
     salvar: function salvar() {
       if (this.select != null) {
@@ -39930,21 +39915,26 @@ var render = function() {
         ],
         staticClass: "form-control",
         on: {
-          change: function($event) {
-            var $$selectedVal = Array.prototype.filter
-              .call($event.target.options, function(o) {
-                return o.selected
-              })
-              .map(function(o) {
-                var val = "_value" in o ? o._value : o.value
-                return val
-              })
-            _vm.$set(
-              _vm.selectVeiculo,
-              "id",
-              $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-            )
-          }
+          change: [
+            function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.selectVeiculo,
+                "id",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            },
+            function($event) {
+              return _vm.veicSelect()
+            }
+          ]
         }
       },
       [
@@ -39953,7 +39943,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _vm._l(_vm.veiculos, function(veiculo, key) {
-          return _c("option", { domProps: { value: veiculo.id } }, [
+          return _c("option", { domProps: { value: key } }, [
             _vm._v(_vm._s(veiculo.descricao))
           ])
         })
@@ -39968,9 +39958,7 @@ var render = function() {
         ? _c("form", { attrs: { action: "/veiculo/salvar", method: "post" } }, [
             _c("div", { staticClass: "form-row" }, [
               _c("div", { staticClass: "form-group col-sm-6 col-lg-6" }, [
-                _c("label", { attrs: { for: "inputEmail4" } }, [
-                  _vm._v("Numero")
-                ]),
+                _c("label", [_vm._v("Numero")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -40000,9 +39988,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group col-sm-6 col-lg-6" }, [
-                _c("label", { attrs: { for: "inputPassword4" } }, [
-                  _vm._v("Descrição")
-                ]),
+                _c("label", [_vm._v("Descrição")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -40033,7 +40019,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "inputAddress" } }, [_vm._v("Tipo")]),
+              _c("label", [_vm._v("Tipo")]),
               _vm._v(" "),
               _c(
                 "select",
@@ -40078,9 +40064,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "inputAddress2" } }, [
-                _vm._v("Placa")
-              ]),
+              _c("label", [_vm._v("Placa")]),
               _vm._v(" "),
               _c("input", {
                 directives: [

@@ -1,9 +1,9 @@
 
 <template>
   <div class="container p-2">
-    <select v-model="selectVeiculo.id" class="form-control">
+    <select v-model="selectVeiculo.id" @change="veicSelect()" class="form-control">
       <option selected value="null">Selecione o veículo </option>
-      <option v-for="(veiculo,key) in veiculos" :value="veiculo.id">{{veiculo.descricao}}</option>
+      <option v-for="(veiculo,key) in veiculos" :value="key">{{veiculo.descricao}}</option>
     </select>
 
     <div class="container">
@@ -11,7 +11,7 @@
       <form action="/veiculo/salvar" method="post" v-if="selectVeiculo.id != 'null'">
         <div class="form-row">
           <div class="form-group col-sm-6 col-lg-6">
-            <label for="inputEmail4">Numero</label>
+            <label >Numero</label>
             <input
               type="number"
               class="form-control"
@@ -20,7 +20,7 @@
             />
           </div>
           <div class="form-group col-sm-6 col-lg-6">
-            <label for="inputPassword4">Descrição</label>
+            <label >Descrição</label>
             <input
               type="text"
               class="form-control"
@@ -30,14 +30,14 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="inputAddress">Tipo</label>
+          <label >Tipo</label>
           <select class="form-control" v-model="selectVeiculo.data.tipo">
             <option value="carro">carro</option>
             <option value="moto">moto</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="inputAddress2">Placa</label>
+          <label >Placa</label>
           <input
             type="text"
             class="form-control"
@@ -58,7 +58,6 @@ export default {
   data() {
     return {
       veiculos: [],
-      select: null,
       selectVeiculo: {
         id: 'null',
         data: {
@@ -72,11 +71,6 @@ export default {
   },
   mounted() {
     this.pegarVeiculos();
-  },
-  watch: {
-      select(){
-          this.veicSelect(this.select)
-      }
   },
   methods: {
     bloquear(){
@@ -101,18 +95,11 @@ export default {
                         data: resultado.data[0]
                     }
             }
-            this.select = resultado.data[0].id
         })
         .catch(error => {});
     },
-    veicSelect(id) {
-      setTimeout(() => {
-
-         this.selectVeiculo.data = this.veiculos.filter(item => {
-             return item.id = id
-         })[0]
-         this.selectVeiculo.id = id
-      }, 200);
+    veicSelect() {
+         this.selectVeiculo.data = this.veiculos[this.selectVeiculo.id]
     },
      salvar(){
 
