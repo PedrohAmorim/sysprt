@@ -49,7 +49,7 @@ export default {
 
   data() {
     return {
-        endereco:nullnpm
+        endereco:null
     }
   },mounted(){
   this.carregarendereco()

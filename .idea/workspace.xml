@@ -34,9 +34,7 @@
   <component name="ChangeListManager">
     <list default="true" id="60c41b7c-1e70-49c1-8de6-f5b85ddcbb09" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/Mapa/info.Vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Mapa/info.Vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/Veiculo/main.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Veiculo/main.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +205,9 @@
       <workItem from="1608125424498" duration="26000" />
       <workItem from="1611856077199" duration="1218000" />
       <workItem from="1612548463556" duration="40000" />
-      <workItem from="1613916959271" duration="728000" />
+      <workItem from="1613916959271" duration="1553000" />
+      <workItem from="1613992832171" duration="665000" />
+      <workItem from="1614165748050" duration="372000" />
     </task>
     <servers />
   </component>
